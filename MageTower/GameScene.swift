@@ -61,7 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                     dy: circle.position.y - square.position.y)
             let distance = max(1.0, sqrt(toCircle.dx * toCircle.dx + toCircle.dy * toCircle.dy))
             let normalized = CGVector(dx: toCircle.dx / distance, dy: toCircle.dy / distance)
-            let forceMagnitude: CGFloat = 50.0
+            let forceMagnitude: CGFloat = 5.0
             let force = CGVector(dx: normalized.dx * forceMagnitude, dy: normalized.dy * forceMagnitude)
             body.applyForce(force)
         }
