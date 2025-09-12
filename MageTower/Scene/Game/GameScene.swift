@@ -34,11 +34,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         
-        spawnService.towerPosition = CGPoint(x: frame.midX, y: frame.midY)
+        // Center the scene's coordinate system so (0,0) is at the middle of the view
+        anchorPoint = CGPoint(x: 0.5, y: 0.5)
 
         tower.fillColor = .white
         tower.strokeColor = .clear
-        tower.position = CGPoint(x: frame.midX, y: frame.midY)
+        tower.position = .zero
         tower.physicsBody = SKPhysicsBody(circleOfRadius: 32)
         tower.physicsBody?.isDynamic = false
         tower.physicsBody?.categoryBitMask = PhysicsCategory.circle
@@ -47,7 +48,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         // Fire a bullet every 1 second toward a random square
         let fireAction = SKAction.sequence([
-            SKAction.wait(forDuration: 1.0),
+            SKAction.wait(forDuration: 0.5),
             SKAction.run { [weak self] in
                 self?.fireBullet()
             }
@@ -122,7 +123,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if enemyService.hit(uuid: uuid) {
                 print("Enemy dead")
             }
-            
         }
     }
     
@@ -132,7 +132,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func fireBullet() {
         guard !enemyService.enemies.isEmpty else { return }
-        guard let target = enemyService.enemies.values.randomElement()?.node else { return }
+        guard let target = enemyService.closest()?.node else { return }
 
         let start = tower.position
         let targetPos = target.position
@@ -157,8 +157,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         let speed: CGFloat = 300 // points per second
         let travelDistance: CGFloat = 2000 // ensure it goes off-screen
-        let endPoint = CGPoint(x: start.x + dir.dx * travelDistance,
-                               y: start.y + dir.dy * travelDistance)
+        let endPoint = CGPoint(
+            x: start.x + dir.dx * travelDistance,
+            y: start.y + dir.dy * travelDistance
+        )
         let duration = TimeInterval(travelDistance / speed)
         bullet.run(SKAction.sequence([
             SKAction.move(to: endPoint, duration: duration),

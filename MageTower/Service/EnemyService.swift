@@ -28,6 +28,22 @@ final class EnemyService {
     func killed(enemy: Enemy) {
         enemy.node?.removeFromParent()
         enemies.removeValue(forKey: enemy.id)
+    }
+    
+    func closest() -> Enemy? {
+        var best: Enemy?
+        var bestValue: CGFloat = .infinity
+        for enemy in enemies.values {
+            guard let pos = enemy.node?.position else {
+                continue
+            }
+            let dist = (pos.x * pos.x) + (pos.y * pos.y)
+            if dist < bestValue {
+                best = enemy
+                bestValue = dist
+            }
+        }
         
+        return best
     }
 }
