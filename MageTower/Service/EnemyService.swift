@@ -12,17 +12,17 @@ final class EnemyService {
     }
     
     // Return true if the enemy is dead
-    @discardableResult func hit(uuid: UUID) -> Bool {
+    @discardableResult func hit(uuid: UUID) -> HitResult {
         guard var enemy = enemies[uuid] else {
-            return true
+            return .miss // Shouldn't happen
         }
         enemy.health -= 1
         guard enemy.health <= 0 else {
             enemies[uuid] = enemy
-            return false
+            return .damage
         }
         killed(enemy: enemy)
-        return true
+        return .kill(enemy)
     }
     
     func killed(enemy: Enemy) {
@@ -46,4 +46,10 @@ final class EnemyService {
         
         return best
     }
+}
+
+enum HitResult {
+    case miss
+    case damage
+    case kill(Enemy)
 }

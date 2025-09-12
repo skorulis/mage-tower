@@ -120,14 +120,60 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
             bulletBody.node?.removeFromParent()
-            if enemyService.hit(uuid: uuid) {
-                print("Enemy dead")
+            if case let HitResult.kill(enemy) = enemyService.hit(uuid: uuid) {
+                didKill(enemy: enemy)
             }
         }
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
         print("Did End")
+    }
+    
+    private func didKill(enemy: Enemy) {
+        print("Enemy dead")
+        
+        // Add particle effect at the enemy's position
+        guard let enemyNode = enemy.node else { return }
+        let killPosition = enemyNode.position
+        
+        // Create explosion particle effect
+        let particleNode = SKEmitterNode()
+        particleNode.particleTexture = SKTexture(imageNamed: "bang-5")
+        particleNode.particleBirthRate = 300
+        particleNode.numParticlesToEmit = 30
+        particleNode.particleLifetime = 0.4
+        particleNode.particleLifetimeRange = 0.3
+        particleNode.particlePosition = killPosition
+        particleNode.particlePositionRange = CGVector(dx: 5, dy: 5)
+        particleNode.particleSpeed = 200
+        particleNode.particleSpeedRange = 100
+        particleNode.particleAlpha = 1.0
+        particleNode.particleAlphaRange = 0.2
+        particleNode.particleAlphaSpeed = -1.5
+        particleNode.particleScale = 0.15
+        particleNode.particleScaleRange = 0.1
+        particleNode.particleScaleSpeed = -0.3
+        particleNode.particleColor = .orange
+        particleNode.particleColorBlendFactor = 1.0
+        particleNode.particleColorBlendFactorRange = 0.3
+        particleNode.particleColorBlendFactorSpeed = -1.2
+        particleNode.particleColorSequence = SKKeyframeSequence(keyframeValues: [UIColor.orange, UIColor.red, UIColor.yellow, UIColor.clear], times: [0.0, 0.3, 0.6, 1.0])
+        particleNode.particleColorBlendFactorSequence = SKKeyframeSequence(keyframeValues: [1.0, 0.8, 0.4, 0.0], times: [0.0, 0.3, 0.6, 1.0])
+        particleNode.particleScaleSequence = SKKeyframeSequence(keyframeValues: [0.2, 0.15, 0.1, 0.0], times: [0.0, 0.2, 0.6, 1.0])
+        particleNode.emissionAngle = 0
+        particleNode.emissionAngleRange = 360
+        particleNode.particleZPosition = 1
+        
+        // Add the particle effect to the scene
+        addChild(particleNode)
+        
+        // Remove the particle effect after it finishes
+        let removeAction = SKAction.sequence([
+            SKAction.wait(forDuration: 1.0),
+            SKAction.removeFromParent()
+        ])
+        particleNode.run(removeAction)
     }
 
     private func fireBullet() {
