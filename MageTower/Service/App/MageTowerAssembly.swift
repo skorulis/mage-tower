@@ -13,6 +13,10 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
         container.register(GameService.self) { _ in
             GameService()
         }
+        
+        container.register(EnemyService.self) { _ in
+            EnemyService()
+        }
     }
     
     static var dependencies: [any Knit.ModuleAssembly.Type] { [] }

@@ -9,15 +9,15 @@ import SpriteKit
 private struct PhysicsCategory {
     static let circle: UInt32 = 0x1 << 0
     static let square: UInt32 = 0x1 << 1
+    static let bullet: UInt32 = 0x1 << 2
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private let spawnService = SpawnService()
+    private let enemyService = EnemyService()
     
-    private var circleNode: SKShapeNode?
-    
-    private var squares: [UUID: SKNode] = [:]
+    private var tower: SKShapeNode = SKShapeNode(circleOfRadius: 32)
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -36,29 +36,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         spawnService.towerPosition = CGPoint(x: frame.midX, y: frame.midY)
 
-        let circleNode = SKShapeNode(circleOfRadius: 50)
-        circleNode.fillColor = .white
-        circleNode.strokeColor = .clear
-        circleNode.position = CGPoint(x: frame.midX, y: frame.midY)
-        circleNode.physicsBody = SKPhysicsBody(circleOfRadius: 50)
-        circleNode.physicsBody?.isDynamic = false
-        circleNode.physicsBody?.categoryBitMask = PhysicsCategory.circle
-        circleNode.physicsBody?.contactTestBitMask = PhysicsCategory.square
-        addChild(circleNode)
-        self.circleNode = circleNode
-        
-        addEnemy()
+        tower.fillColor = .white
+        tower.strokeColor = .clear
+        tower.position = CGPoint(x: frame.midX, y: frame.midY)
+        tower.physicsBody = SKPhysicsBody(circleOfRadius: 32)
+        tower.physicsBody?.isDynamic = false
+        tower.physicsBody?.categoryBitMask = PhysicsCategory.circle
+        tower.physicsBody?.contactTestBitMask = PhysicsCategory.square
+        addChild(tower)
 
+        // Fire a bullet every 1 second toward a random square
+        let fireAction = SKAction.sequence([
+            SKAction.wait(forDuration: 1.0),
+            SKAction.run { [weak self] in
+                self?.fireBullet()
+            }
+        ])
+        run(SKAction.repeatForever(fireAction), withKey: "fireTimer")
+        
+        let enemyAction = SKAction.sequence([
+            SKAction.wait(forDuration: 1.0),
+            SKAction.run { [weak self] in
+                self?.addEnemy()
+            }
+        ])
+        run(SKAction.repeatForever(enemyAction), withKey: "enemyTimer")
     }
 
     override func update(_ currentTime: TimeInterval) {
-        guard let circle = circleNode else { return }
-        for square in squares.values {
-            guard let body = square.physicsBody else {
+        for enemy in enemyService.enemies.values {
+            guard let square = enemy.node, let body = square.physicsBody else {
                 continue
             }
-            let toCircle = CGVector(dx: circle.position.x - square.position.x,
-                                    dy: circle.position.y - square.position.y)
+            let toCircle = CGVector(dx: tower.position.x - square.position.x,
+                                    dy: tower.position.y - square.position.y)
             let distance = max(1.0, sqrt(toCircle.dx * toCircle.dx + toCircle.dy * toCircle.dy))
             let normalized = CGVector(dx: toCircle.dx / distance, dy: toCircle.dy / distance)
             let forceMagnitude: CGFloat = 5.0
@@ -68,7 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func addEnemy() {
-        let enemy = spawnService.spawn()
+        var enemy = spawnService.spawn()
         
         let squareSize: CGFloat = 20
         let squareNode = SKShapeNode(rectOf: CGSize(width: squareSize, height: squareSize))
@@ -81,10 +92,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         squareNode.physicsBody?.linearDamping = 2.0
         squareNode.physicsBody?.restitution = 0.0
         squareNode.physicsBody?.categoryBitMask = PhysicsCategory.square
-        squareNode.physicsBody?.contactTestBitMask = PhysicsCategory.circle
+        squareNode.physicsBody?.contactTestBitMask = PhysicsCategory.circle | PhysicsCategory.bullet
         addChild(squareNode)
         
-        self.squares[enemy.id] = squareNode
+        enemy.node = squareNode
+        self.enemyService.add(enemy: enemy)
     }
 
     func didBegin(_ contact: SKPhysicsContact) {
@@ -97,15 +109,61 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             print("Square hit circle: id=\(uuid)")
             
-            squares.removeValue(forKey: uuid)
+            enemyService.enemies.removeValue(forKey: uuid)
             hitNode?.removeFromParent()
             
-            addEnemy()
+        } else if categories == (PhysicsCategory.bullet | PhysicsCategory.square) {
+            let squareBody = contact.bodyA.categoryBitMask == PhysicsCategory.square ? contact.bodyA : contact.bodyB
+            let bulletBody = contact.bodyA.categoryBitMask == PhysicsCategory.bullet ? contact.bodyA : contact.bodyB
+            guard let uuid = squareBody.node?.userData?["id"] as? UUID else {
+                return
+            }
+            bulletBody.node?.removeFromParent()
+            if enemyService.hit(uuid: uuid) {
+                print("Enemy dead")
+            }
+            
         }
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
         print("Did End")
+    }
+
+    private func fireBullet() {
+        guard !enemyService.enemies.isEmpty else { return }
+        guard let target = enemyService.enemies.values.randomElement()?.node else { return }
+
+        let start = tower.position
+        let targetPos = target.position
+        let dx = targetPos.x - start.x
+        let dy = targetPos.y - start.y
+        let distance = max(1.0, sqrt(dx * dx + dy * dy))
+        let dir = CGVector(dx: dx / distance, dy: dy / distance)
+
+        let bulletRadius: CGFloat = 4
+        let bullet = SKShapeNode(circleOfRadius: bulletRadius)
+        bullet.fillColor = .cyan
+        bullet.strokeColor = .clear
+        bullet.position = start
+        bullet.physicsBody = SKPhysicsBody(circleOfRadius: bulletRadius)
+        bullet.physicsBody?.affectedByGravity = false
+        bullet.physicsBody?.allowsRotation = false
+        bullet.physicsBody?.categoryBitMask = PhysicsCategory.bullet
+        bullet.physicsBody?.contactTestBitMask = PhysicsCategory.square
+        bullet.physicsBody?.collisionBitMask = 0
+        bullet.physicsBody?.usesPreciseCollisionDetection = true
+        addChild(bullet)
+
+        let speed: CGFloat = 300 // points per second
+        let travelDistance: CGFloat = 2000 // ensure it goes off-screen
+        let endPoint = CGPoint(x: start.x + dir.dx * travelDistance,
+                               y: start.y + dir.dy * travelDistance)
+        let duration = TimeInterval(travelDistance / speed)
+        bullet.run(SKAction.sequence([
+            SKAction.move(to: endPoint, duration: duration),
+            SKAction.removeFromParent()
+        ]))
     }
 }
 
