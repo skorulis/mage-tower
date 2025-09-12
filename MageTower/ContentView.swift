@@ -1,13 +1,17 @@
 //  Created by Alexander Skorulis on 10/9/2025.
 
+import ASKCoordinator
 import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
+    
+    @State var coordinator = Coordinator(root: GamePath.game)
+    @Environment(\.resolver) private var resolver
+    
     var body: some View {
-        let scene = GameScene(size: UIScreen.main.bounds.size)
-        SpriteView(scene: scene)
-            .ignoresSafeArea()
+        CoordinatorView(coordinator: coordinator)
+            .with(renderer: resolver!.gamePathRenderer())
     }
 }
 

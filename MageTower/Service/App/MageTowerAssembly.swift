@@ -17,12 +17,28 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
         container.register(EnemyService.self) { _ in
             EnemyService()
         }
+        
+        container.register(GamePathRenderer.self) { GamePathRenderer(resolver: $0) }
+        
+        registerViewModels(container: container)
+    }
+    
+    private func registerViewModels(container: Container<TargetResolver>) {
+        container.register(GameViewModel.self) { GameViewModel.make(resolver: $0) }
     }
     
     static var dependencies: [any Knit.ModuleAssembly.Type] { [] }
 }
 
+// MARK: - Resolver setup
+
 nonisolated final class MageTowerResolver: BaseResolver {}
+
+extension MageTowerAssembly {
+    @MainActor static func testing() -> ScopedModuleAssembler<MageTowerResolver> {
+        ScopedModuleAssembler<MageTowerResolver>([MageTowerAssembly()])
+    }
+}
 
 extension EnvironmentValues {
     @Entry var resolver: MageTowerResolver?

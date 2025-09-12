@@ -1,0 +1,36 @@
+//  Created by Alexander Skorulis on 12/9/2025.
+
+import ASKCoordinator
+import Knit
+import SwiftUI
+
+public enum GamePath: CoordinatorPath {
+ 
+    case game
+    
+    public var id: String {
+        String(describing: self)
+    }
+}
+
+
+public struct GamePathRenderer: CoordinatorPathRenderer {
+    
+    let resolver: MageTowerResolver
+    
+    @ViewBuilder
+    public func render(path: GamePath, in coordinator: Coordinator) -> some View {
+        switch path {
+        case .game:
+            GameView(viewModel: coordinator.apply(resolver.gameViewModel()))
+        }
+    }
+}
+
+
+private extension Coordinator {
+    func apply<Obj>(_ obj: Obj) -> Obj {
+        (obj as? CoordinatorViewModel)?.coordinator = self
+        return obj
+    }
+}
