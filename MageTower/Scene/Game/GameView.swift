@@ -27,9 +27,7 @@ extension GameView: View {
     private var bottomButtons: some View {
         HStack {
             WaveProgressBox(
-                waveNumber: 100,
-                waveProgression: 5,
-                waveDuration: 11
+                wave: viewModel.wave
             )
         }
         .padding(.horizontal, 16)

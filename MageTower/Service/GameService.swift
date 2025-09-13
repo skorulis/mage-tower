@@ -1,13 +1,21 @@
 //  Created by Alexander Skorulis on 10/9/2025.
 
+import Combine
 import Foundation
 import QuartzCore
 
-final class GameService {
+final class GameService: ObservableObject {
     
     var time: Time = .init()
+    @Published var wave: Wave = .init(number: 1, time: 0, duration: 1)
     
-    func start() {
+    func start(params: LevelParameters) {
+        
+        wave = .init(
+            number: 1,
+            time: 0,
+            duration: params.waveDuration
+        )
         // Initialize time tracking
         time = .init()
     }
@@ -15,6 +23,7 @@ final class GameService {
     func update(_ currentTime: TimeInterval) {
         // Calculate delta time (time since last frame)
         time.update(currentTime)
+        wave.add(delta: time.deltaTime)
     }
 
 }

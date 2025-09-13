@@ -5,13 +5,19 @@ import Foundation
 enum Level {
     case one
     
+    var params: LevelParameters {
+        switch self {
+        case .one:
+            return LevelParamsLibrary.one
+        }
+    }
 }
 
 struct LevelParameters {
     let spawnRate: Double
     let spawnRateChange: Double
     
-    var waveLength: TimeInterval { 20 }
+    var waveDuration: TimeInterval { 20 }
 }
 
 enum LevelParamsLibrary {

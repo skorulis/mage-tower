@@ -6,9 +6,7 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct WaveProgressBox {
-    let waveNumber: Int
-    let waveProgression: TimeInterval
-    let waveDuration: TimeInterval
+    let wave: Wave
 }
 
 // MARK: - Rendering
@@ -18,7 +16,7 @@ extension WaveProgressBox: View {
     var body: some View {
         InfoBox {
             VStack(alignment: .leading) {
-                Text("Wave \(waveNumber)")
+                Text("Wave \(wave.number)")
                 progress
             }
         }
@@ -29,7 +27,7 @@ extension WaveProgressBox: View {
     }
     
     private var progressValue: CGFloat {
-        CGFloat(waveProgression) / CGFloat(waveDuration)
+        CGFloat(wave.time) / CGFloat(wave.duration)
     }
 }
 
@@ -37,9 +35,7 @@ extension WaveProgressBox: View {
 
 #Preview {
     WaveProgressBox(
-        waveNumber: 100,
-        waveProgression: 3,
-        waveDuration: 10
+        wave: .init(number: 100, time: 2, duration: 10)
     )
 }
 
