@@ -1,0 +1,6 @@
+xcassets:
+  inputs:
+    - MageTower/Resources/Colors.xcassets 
+  outputs:
+    - templateName: swift5
+      output: MageTower/Generated/Assets.swift

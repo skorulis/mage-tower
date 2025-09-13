@@ -16,8 +16,23 @@ import SwiftUI
 extension GameView: View {
     
     var body: some View {
-        SpriteView(scene: viewModel.scene)
-            .ignoresSafeArea()
+        ZStack(alignment: .bottom) {
+            SpriteView(scene: viewModel.scene)
+                .ignoresSafeArea()
+                
+            bottomButtons
+        }
+    }
+    
+    private var bottomButtons: some View {
+        HStack {
+            WaveProgressBox(
+                waveNumber: 100,
+                waveProgression: 5,
+                waveDuration: 11
+            )
+        }
+        .padding(.horizontal, 16)
     }
 }
 
