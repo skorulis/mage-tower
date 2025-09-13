@@ -7,12 +7,15 @@ final class SpawnService {
     
     let spawnRadius: CGFloat = 500
     
-    func spawn() -> Enemy {
+    func spawn(levelParams: LevelParameters, wave: Int) -> Enemy {
+        let health = levelParams.health(wave: wave)
         let angle = CGFloat.random(in: 0..<(2 * .pi))
-        print(angle)
         let x = spawnRadius * cos(angle)
         let y = spawnRadius * sin(angle)
-        return .init(spawnPosition: CGPoint(x: x, y: y))
+        return .init(
+            spawnPosition: CGPoint(x: x, y: y),
+            health: health
+        )
     }
     
 }

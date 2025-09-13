@@ -47,7 +47,7 @@ extension GameViewModel {
     func onUpdate(_ time: TimeInterval) {
         gameService.update(time)
         if gameService.time.lastUpdateTime > enemyService.lastSpawn + levelParameters.spawnRate {
-            var enemy = spawnService.spawn()
+            var enemy = spawnService.spawn(levelParams: levelParameters, wave: wave.number)
             scene.add(enemy: &enemy)
             enemyService.add(enemy: enemy, time: gameService.time.lastUpdateTime)
         }

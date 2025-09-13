@@ -7,6 +7,7 @@ import SwiftUI
 
 @MainActor struct WaveProgressBox {
     let wave: Wave
+    let levelParams: LevelParameters
 }
 
 // MARK: - Rendering
@@ -16,6 +17,7 @@ extension WaveProgressBox: View {
     var body: some View {
         InfoBox {
             VStack(alignment: .leading) {
+                Text("❤️ \(levelParams.health(wave: wave.number))")
                 Text("Wave \(wave.number)")
                 progress
             }
@@ -35,7 +37,8 @@ extension WaveProgressBox: View {
 
 #Preview {
     WaveProgressBox(
-        wave: .init(number: 100, time: 2, duration: 10)
+        wave: .init(number: 100, time: 2, duration: 10),
+        levelParams: Level.one.params
     )
 }
 

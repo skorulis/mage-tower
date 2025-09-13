@@ -17,7 +17,14 @@ struct LevelParameters {
     let spawnRate: Double
     let spawnRateChange: Double
     
+    let baseHealth: Double
+    let healthIncrease: Double
+    
     var waveDuration: TimeInterval { 20 }
+    
+    func health(wave: Int) -> Double {
+        baseHealth * pow(1 + healthIncrease, Double(wave))
+    }
 }
 
 enum LevelParamsLibrary {
@@ -25,6 +32,8 @@ enum LevelParamsLibrary {
         LevelParameters(
             spawnRate: 1,
             spawnRateChange: 0.01,
+            baseHealth: 1,
+            healthIncrease: 0.2
         )
     }
 }
