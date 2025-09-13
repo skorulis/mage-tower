@@ -9,14 +9,14 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
     
     init() {}
     
-    @MainActor func assemble(container: Container<TargetResolver>) {
-        container.register(GameService.self) { _ in
-            GameService()
-        }
-        
+    @MainActor func assemble(container: Container<TargetResolver>) {        
         container.register(EnemyService.self) { _ in
             EnemyService()
         }
+        
+        container.register(GameService.self) { _ in GameService() }
+        
+        container.register(SpawnService.self) { _ in SpawnService() }
         
         container.register(GamePathRenderer.self) { GamePathRenderer(resolver: $0) }
         

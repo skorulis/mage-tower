@@ -14,20 +14,18 @@ private struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    private let spawnService = SpawnService()
-    private let enemyService = EnemyService()
+    private let enemyService: EnemyService
     
     private var tower: SKShapeNode = SKShapeNode(circleOfRadius: 32)
+    var onUpdate: ((TimeInterval) -> Void)?
     
-    override init(size: CGSize) {
+    init(size: CGSize, enemyService: EnemyService) {
+        self.enemyService = enemyService
         super.init(size: size)
         scaleMode = .resizeFill
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        scaleMode = .resizeFill
-    }
+    required init?(coder aDecoder: NSCoder) { nil }
 
     override func didMove(to view: SKView) {
         backgroundColor = .black
@@ -54,17 +52,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         ])
         run(SKAction.repeatForever(fireAction), withKey: "fireTimer")
-        
-        let enemyAction = SKAction.sequence([
-            SKAction.wait(forDuration: 1.0),
-            SKAction.run { [weak self] in
-                self?.addEnemy()
-            }
-        ])
-        run(SKAction.repeatForever(enemyAction), withKey: "enemyTimer")
     }
 
     override func update(_ currentTime: TimeInterval) {
+        onUpdate?(currentTime)
         for enemy in enemyService.enemies.values {
             guard let square = enemy.node, let body = square.physicsBody else {
                 continue
@@ -79,9 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func addEnemy() {
-        var enemy = spawnService.spawn()
-        
+    func add(enemy: inout Enemy) {
         let squareSize: CGFloat = 20
         let squareNode = SKShapeNode(rectOf: CGSize(width: squareSize, height: squareSize))
         squareNode.fillColor = .white
@@ -97,7 +86,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(squareNode)
         
         enemy.node = squareNode
-        self.enemyService.add(enemy: enemy)
     }
 
     func didBegin(_ contact: SKPhysicsContact) {
