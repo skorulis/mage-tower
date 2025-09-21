@@ -1,5 +1,5 @@
 {
-  "originHash" : "64c21866791ba98a47950bc9127c1616e22e223b7715853ed8fc93e439c0d9ae",
+  "originHash" : "f0d776588e3b744e3a2e07aa2abd9a66ed2a9c4f1e0ca49636e224b4f3c7994a",
   "pins" : [
     {
       "identity" : "askcoordinator",
@@ -35,6 +35,15 @@
       "state" : {
         "revision" : "f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2",
         "version" : "601.0.1"
+      }
+    },
+    {
+      "identity" : "swiftcompactor",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:openalloc/SwiftCompactor.git",
+      "state" : {
+        "revision" : "5caf0b3d43ee139fc34673df89c5ad93d2f5078f",
+        "version" : "1.3.0"
       }
     }
   ],

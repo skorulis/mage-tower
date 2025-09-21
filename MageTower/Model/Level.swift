@@ -32,7 +32,7 @@ enum LevelParamsLibrary {
         LevelParameters(
             spawnRate: 1,
             spawnRateChange: 0.01,
-            baseHealth: 1,
+            baseHealth: 2,
             healthIncrease: 0.2
         )
     }

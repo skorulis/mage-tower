@@ -7,18 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA4F8FCA2E769D8300F78A1C /* Compactor in Frameworks */ = {isa = PBXBuildFile; productRef = FA4F8FC92E769D8300F78A1C /* Compactor */; };
 		FA81A1852E71895100A84409 /* Knit in Frameworks */ = {isa = PBXBuildFile; productRef = FA81A1842E71895100A84409 /* Knit */; };
 		FA81A1872E71895100A84409 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA81A1862E71895100A84409 /* KnitMacros */; };
 		FA81A18F2E718A0800A84409 /* knitconfig.json in Resources */ = {isa = PBXBuildFile; fileRef = FA81A18E2E718A0800A84409 /* knitconfig.json */; };
 		FA81A1C22E740FC600A84409 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA81A1C12E740FC600A84409 /* ASKCoordinator */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		FA4F8FDC2E76A4B700F78A1C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA81A15E2E716AD600A84409 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA81A1652E716AD600A84409;
+			remoteInfo = MageTower;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		FA4F8FD82E76A4B700F78A1C /* MageTowerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MageTowerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA81A1662E716AD600A84409 /* MageTower.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MageTower.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA81A18E2E718A0800A84409 /* knitconfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knitconfig.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		FA4F8FD92E76A4B700F78A1C /* MageTowerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MageTowerTests;
+			sourceTree = "<group>";
+		};
 		FA81A1682E716AD600A84409 /* MageTower */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = MageTower;
@@ -27,11 +44,19 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FA4F8FD52E76A4B700F78A1C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA81A1632E716AD600A84409 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				FA81A1C22E740FC600A84409 /* ASKCoordinator in Frameworks */,
+				FA4F8FCA2E769D8300F78A1C /* Compactor in Frameworks */,
 				FA81A1852E71895100A84409 /* Knit in Frameworks */,
 				FA81A1872E71895100A84409 /* KnitMacros in Frameworks */,
 			);
@@ -45,6 +70,7 @@
 			children = (
 				FA81A18E2E718A0800A84409 /* knitconfig.json */,
 				FA81A1682E716AD600A84409 /* MageTower */,
+				FA4F8FD92E76A4B700F78A1C /* MageTowerTests */,
 				FA81A1672E716AD600A84409 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				FA81A1662E716AD600A84409 /* MageTower.app */,
+				FA4F8FD82E76A4B700F78A1C /* MageTowerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,6 +87,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		FA4F8FD72E76A4B700F78A1C /* MageTowerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA4F8FDE2E76A4B700F78A1C /* Build configuration list for PBXNativeTarget "MageTowerTests" */;
+			buildPhases = (
+				FA4F8FD42E76A4B700F78A1C /* Sources */,
+				FA4F8FD52E76A4B700F78A1C /* Frameworks */,
+				FA4F8FD62E76A4B700F78A1C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FA4F8FDD2E76A4B700F78A1C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				FA4F8FD92E76A4B700F78A1C /* MageTowerTests */,
+			);
+			name = MageTowerTests;
+			packageProductDependencies = (
+			);
+			productName = MageTowerTests;
+			productReference = FA4F8FD82E76A4B700F78A1C /* MageTowerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		FA81A1652E716AD600A84409 /* MageTower */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA81A1712E716AD700A84409 /* Build configuration list for PBXNativeTarget "MageTower" */;
@@ -81,6 +131,7 @@
 				FA81A1842E71895100A84409 /* Knit */,
 				FA81A1862E71895100A84409 /* KnitMacros */,
 				FA81A1C12E740FC600A84409 /* ASKCoordinator */,
+				FA4F8FC92E769D8300F78A1C /* Compactor */,
 			);
 			productName = MageTower;
 			productReference = FA81A1662E716AD600A84409 /* MageTower.app */;
@@ -96,6 +147,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					FA4F8FD72E76A4B700F78A1C = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = FA81A1652E716AD600A84409;
+					};
 					FA81A1652E716AD600A84409 = {
 						CreatedOnToolsVersion = 26.0;
 					};
@@ -113,6 +168,7 @@
 			packageReferences = (
 				FA81A1832E71895100A84409 /* XCRemoteSwiftPackageReference "knit" */,
 				FA81A1C02E740FC600A84409 /* XCRemoteSwiftPackageReference "ASKCoordinator" */,
+				FA4F8FC82E769D8300F78A1C /* XCRemoteSwiftPackageReference "SwiftCompactor" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA81A1672E716AD600A84409 /* Products */;
@@ -120,11 +176,19 @@
 			projectRoot = "";
 			targets = (
 				FA81A1652E716AD600A84409 /* MageTower */,
+				FA4F8FD72E76A4B700F78A1C /* MageTowerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		FA4F8FD62E76A4B700F78A1C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA81A1642E716AD600A84409 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -136,6 +200,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FA4F8FD42E76A4B700F78A1C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA81A1622E716AD600A84409 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,6 +217,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FA4F8FDD2E76A4B700F78A1C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA81A1652E716AD600A84409 /* MageTower */;
+			targetProxy = FA4F8FDC2E76A4B700F78A1C /* PBXContainerItemProxy */;
+		};
 		FA81A1892E71896900A84409 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = FA81A1882E71896900A84409 /* KnitBuildPlugin */;
@@ -153,6 +229,48 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		FA4F8FDF2E76A4B700F78A1C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X4S6MUZL2D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skorulis.MageTowerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MageTower.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MageTower";
+			};
+			name = Debug;
+		};
+		FA4F8FE02E76A4B700F78A1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X4S6MUZL2D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skorulis.MageTowerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MageTower.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MageTower";
+			};
+			name = Release;
+		};
 		FA81A16F2E716AD700A84409 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -341,6 +459,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FA4F8FDE2E76A4B700F78A1C /* Build configuration list for PBXNativeTarget "MageTowerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA4F8FDF2E76A4B700F78A1C /* Debug */,
+				FA4F8FE02E76A4B700F78A1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FA81A1612E716AD600A84409 /* Build configuration list for PBXProject "MageTower" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -362,6 +489,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		FA4F8FC82E769D8300F78A1C /* XCRemoteSwiftPackageReference "SwiftCompactor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:openalloc/SwiftCompactor.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 		FA81A1832E71895100A84409 /* XCRemoteSwiftPackageReference "knit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cashapp/knit";
@@ -381,6 +516,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FA4F8FC92E769D8300F78A1C /* Compactor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA4F8FC82E769D8300F78A1C /* XCRemoteSwiftPackageReference "SwiftCompactor" */;
+			productName = Compactor;
+		};
 		FA81A1842E71895100A84409 /* Knit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA81A1832E71895100A84409 /* XCRemoteSwiftPackageReference "knit" */;

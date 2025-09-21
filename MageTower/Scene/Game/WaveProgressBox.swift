@@ -17,11 +17,16 @@ extension WaveProgressBox: View {
     var body: some View {
         InfoBox {
             VStack(alignment: .leading) {
-                Text("❤️ \(levelParams.health(wave: wave.number))")
+                Text("❤️ \(enemyHealth)")
                 Text("Wave \(wave.number)")
                 progress
             }
         }
+    }
+    
+    private var enemyHealth: String {
+        let value = levelParams.health(wave: wave.number)
+        return CompactNumberFormatter().string(value)
     }
     
     private var progress: some View {
@@ -37,7 +42,12 @@ extension WaveProgressBox: View {
 
 #Preview {
     WaveProgressBox(
-        wave: .init(number: 100, time: 2, duration: 10),
+        wave: .init(number: 10, time: 2, duration: 10),
+        levelParams: Level.one.params
+    )
+    
+    WaveProgressBox(
+        wave: .init(number: 160, time: 2, duration: 10),
         levelParams: Level.one.params
     )
 }
