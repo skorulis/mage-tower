@@ -11,6 +11,7 @@ final class EnemyService {
     private let gameStore: GameStore
     
     var enemies: [UUID: Enemy] = [:]
+    var enemyCount: Int { enemies.count }
     var lastSpawn: TimeInterval = 0
     
     private var tower: Tower
@@ -51,6 +52,7 @@ final class EnemyService {
     func killed(enemy: Enemy) {
         enemy.node?.removeFromParent()
         enemies.removeValue(forKey: enemy.id)
+        gameStore.tower.xp += 1
     }
     
     func closest() -> Enemy? {

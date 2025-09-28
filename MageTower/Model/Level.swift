@@ -21,6 +21,8 @@ struct LevelParameters {
     let healthIncrease: Double
     
     var waveDuration: TimeInterval { 20 }
+    var enemyCap: Int { 50 }
+    var xpMultiplier: Double { 1 }
     
     func health(wave: Int) -> Double {
         baseHealth * pow(1 + healthIncrease, Double(wave))

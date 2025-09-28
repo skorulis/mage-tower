@@ -29,8 +29,10 @@ extension GameView: View {
             Grid(horizontalSpacing: 8) {
                 GridRow {
                     TowerStatsBox(
-                        health: viewModel.tower.value(.health),
+                        currentHealth: viewModel.tower.currentHealth,
+                        maxHealth: viewModel.tower.value(.health),
                         damage: viewModel.tower.value(.damage),
+                        xp: viewModel.tower.xp,
                     )
                     WaveProgressBox(
                         wave: viewModel.wave,

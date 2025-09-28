@@ -30,6 +30,8 @@ final class GameStore: ObservableObject {
         )
         // Initialize time tracking
         time = .init()
+        
+        tower.currentHealth = tower.value(.health)
     }
     
     func update(_ currentTime: TimeInterval) {

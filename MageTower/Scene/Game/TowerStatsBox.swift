@@ -6,8 +6,10 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct TowerStatsBox {
-    let health: Double
+    let currentHealth: Double
+    let maxHealth: Double
     let damage: Double
+    let xp: Double
     
     private static let formatter = CompactNumberFormatter()
 }
@@ -16,24 +18,42 @@ import SwiftUI
 
 extension TowerStatsBox: View {
     
-    
-    
     var body: some View {
         InfoBox {
             VStack(alignment: .leading) {
-                Text("❤️ \(Self.formatter.string(health))")
-                Text("🗡️ \(Self.formatter.string(damage))")
+                HealthBar(
+                    currentHealth: currentHealth,
+                    maxHealth: maxHealth
+                )
+                HStack(alignment: .center) {
+                    VStack {
+                        Text("❤️")
+                        Text(Self.formatter.string(maxHealth))
+                    }
+                    VStack {
+                        Text("🗡️")
+                        Text(Self.formatter.string(damage))
+                    }
+                    
+                    VStack {
+                        Text("⚡")
+                        Text(Self.formatter.string(xp))
+                    }
+                }
             }
         }
     }
+
 }
 
 // MARK: - Previews
 
 #Preview {
     TowerStatsBox(
-        health: 100,
+        currentHealth: 50,
+        maxHealth: 100,
         damage: 1260,
+        xp: 10003,
     )
 }
 

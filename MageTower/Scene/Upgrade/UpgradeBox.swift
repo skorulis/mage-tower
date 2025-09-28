@@ -8,6 +8,7 @@ import SwiftUI
 @MainActor struct UpgradeBox {
     let name: String
     let value: Double
+    let cost: Double
 }
 
 // MARK: - Rendering
@@ -19,7 +20,10 @@ extension UpgradeBox: View {
             HStack {
                 Text(name)
                 Spacer()
-                Text(CompactNumberFormatter().string(value))
+                VStack {
+                    Text(CompactNumberFormatter().string(value))
+                    Text(CompactNumberFormatter().string(cost))
+                }
             }
         }
     }
@@ -30,13 +34,13 @@ extension UpgradeBox: View {
 #Preview {
     Grid(horizontalSpacing: 4, verticalSpacing: 4) {
         GridRow {
-            UpgradeBox(name: "Damage", value: 10)
-            UpgradeBox(name: "Health", value: 5100)
+            UpgradeBox(name: "Damage", value: 10, cost: 100)
+            UpgradeBox(name: "Health", value: 5100, cost: 1000)
         }
         
         GridRow {
-            UpgradeBox(name: "Damage", value: 5100)
-            UpgradeBox(name: "Health", value: 5100)
+            UpgradeBox(name: "Damage", value: 5100, cost: 1000)
+            UpgradeBox(name: "Health", value: 5100, cost: 3000)
         }
     }
 }

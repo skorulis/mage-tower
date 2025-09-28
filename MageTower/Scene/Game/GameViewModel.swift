@@ -59,6 +59,13 @@ extension GameViewModel {
     
     func onUpdate(_ time: TimeInterval) {
         gameStore.update(time)
+        maybeSpawn()
+    }
+    
+    private func maybeSpawn() {
+        guard enemyService.enemyCount < gameStore.levelParameters.enemyCap else {
+            return
+        }
         if gameStore.time.lastUpdateTime > enemyService.lastSpawn + gameStore.levelParameters.spawnRate {
             var enemy = spawnService.spawn(levelParams: gameStore.levelParameters, wave: wave.number)
             scene.add(enemy: &enemy)

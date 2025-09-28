@@ -6,7 +6,7 @@ import SpriteKit
 
 struct ContentView: View {
     
-    @State var coordinator = Coordinator(root: GamePath.game)
+    @State var coordinator = Coordinator(root: GamePath.mainMenu)
     @Environment(\.resolver) private var resolver
     
     var body: some View {

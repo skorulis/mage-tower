@@ -29,8 +29,16 @@ import KnitMacros
 extension InGameUpgradeViewModel {
     
     func upgrade(stat: MainStat) {
+        guard canAfford(stat: stat) else { return }
+        let cost = stat.cost(level: tower.level(stat))
         let old = gameStore.tower.statLevel[stat] ?? 1
         gameStore.tower.statLevel[stat] = old + 1
+        gameStore.tower.xp -= cost
+    }
+    
+    func canAfford(stat: MainStat) -> Bool {
+        let cost = stat.cost(level: tower.level(stat))
+        return tower.xp >= cost
     }
 }
 

@@ -30,6 +30,7 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
     private func registerViewModels(container: Container<TargetResolver>) {
         container.register(GameViewModel.self) { GameViewModel.make(resolver: $0) }
         container.register(InGameUpgradeViewModel.self) { InGameUpgradeViewModel.make(resolver: $0) }
+        container.register(MainMenuViewModel.self) { MainMenuViewModel.make(resolver: $0) }
     }
     
     static var dependencies: [any Knit.ModuleAssembly.Type] { [] }

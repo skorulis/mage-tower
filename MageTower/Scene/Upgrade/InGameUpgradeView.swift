@@ -26,17 +26,21 @@ extension InGameUpgradeView: View {
             Button(action: { viewModel.upgrade(stat: items[0]) }) {
                 UpgradeBox(
                     name: items[0].rawValue,
-                    value: viewModel.tower.value(items[0])
+                    value: viewModel.tower.value(items[0]),
+                    cost: viewModel.tower.cost(items[0]),
                 )
             }
+            .disabled(!viewModel.canAfford(stat: items[0]))
             
             if items.count > 1 {
                 Button(action: { viewModel.upgrade(stat: items[1]) }) {
                     UpgradeBox(
                         name: items[1].rawValue,
-                        value: viewModel.tower.value(items[1])
+                        value: viewModel.tower.value(items[1]),
+                        cost: viewModel.tower.cost(items[1]),
                     )
                 }
+                .disabled(!viewModel.canAfford(stat: items[1]))
             }
         }
     }

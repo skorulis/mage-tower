@@ -10,6 +10,11 @@ enum MainStat: String, CaseIterable {
         return baseValue * pow(Double(level), growthFactor)
     }
     
+    func cost(level: Int) -> Double {
+        let multiplier = pow(Double(level), costGrowthFactor)
+        return baseCost * multiplier
+    }
+    
     var growthFactor: Double {
         switch self {
         case .health:
@@ -19,10 +24,28 @@ enum MainStat: String, CaseIterable {
         }
     }
     
-    var baseValue: Double {
+    var costGrowthFactor: Double {
+        switch self {
+        case .health:
+            return 1.02
+        case .damage:
+            return 1.02
+        }
+    }
+    
+    var baseCost: Double {
         switch self {
         case .health:
             return 10
+        case .damage:
+            return 10
+        }
+    }
+    
+    var baseValue: Double {
+        switch self {
+        case .health:
+            return 100
         case .damage:
             return 10
         }
