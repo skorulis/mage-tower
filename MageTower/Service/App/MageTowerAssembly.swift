@@ -10,21 +10,26 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
     init() {}
     
     @MainActor func assemble(container: Container<TargetResolver>) {        
-        container.register(EnemyService.self) { _ in
-            EnemyService()
-        }
-        
-        container.register(GameService.self) { _ in GameService() }
+        container.register(EnemyService.self) { EnemyService.make(resolver: $0) }
         
         container.register(SpawnService.self) { _ in SpawnService() }
         
         container.register(GamePathRenderer.self) { GamePathRenderer(resolver: $0) }
         
         registerViewModels(container: container)
+        registerStores(container: container)
+    }
+    
+    private func registerStores(container: Container<TargetResolver>) {
+        container.register(GameStore.self) { _ in
+            GameStore()
+        }
+        .inObjectScope(.container)
     }
     
     private func registerViewModels(container: Container<TargetResolver>) {
         container.register(GameViewModel.self) { GameViewModel.make(resolver: $0) }
+        container.register(InGameUpgradeViewModel.self) { InGameUpgradeViewModel.make(resolver: $0) }
     }
     
     static var dependencies: [any Knit.ModuleAssembly.Type] { [] }

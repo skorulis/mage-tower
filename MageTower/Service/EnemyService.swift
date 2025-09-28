@@ -1,13 +1,33 @@
 //  Created by Alexander Skorulis on 12/9/2025.
 
+import Combine
 import Foundation
 import SpriteKit
+import Knit
+import KnitMacros
 
 final class EnemyService {
     
-    var enemies: [UUID: Enemy] = [:]
+    private let gameStore: GameStore
     
+    var enemies: [UUID: Enemy] = [:]
     var lastSpawn: TimeInterval = 0
+    
+    private var tower: Tower
+    
+    var cancellables = Set<AnyCancellable>()
+    
+    @Resolvable<MageTowerResolver>
+    init(gameStore: GameStore) {
+        self.gameStore = gameStore
+        self.tower = gameStore.tower
+        
+        gameStore.$tower.sink { [unowned self] in
+            self.tower = $0
+        }
+        .store(in: &cancellables)
+        
+    }
     
     func add(enemy: Enemy, time: TimeInterval) {
         enemies[enemy.id] = enemy
@@ -19,7 +39,7 @@ final class EnemyService {
         guard var enemy = enemies[uuid] else {
             return .miss // Shouldn't happen
         }
-        enemy.health -= 1
+        enemy.health -= tower.value(.damage)
         guard enemy.health <= 0 else {
             enemies[uuid] = enemy
             return .damage

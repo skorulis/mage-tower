@@ -25,11 +25,20 @@ extension GameView: View {
     }
     
     private var bottomButtons: some View {
-        HStack {
-            WaveProgressBox(
-                wave: viewModel.wave,
-                levelParams: viewModel.levelParameters
-            )
+        VStack {
+            Grid(horizontalSpacing: 8) {
+                GridRow {
+                    TowerStatsBox(
+                        health: viewModel.tower.value(.health),
+                        damage: viewModel.tower.value(.damage),
+                    )
+                    WaveProgressBox(
+                        wave: viewModel.wave,
+                        levelParams: viewModel.gameStore.levelParameters
+                    )
+                }
+            }
+            InGameUpgradeView(viewModel: viewModel.upgradeViewModel)
         }
         .padding(.horizontal, 16)
     }

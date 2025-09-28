@@ -1,20 +1,32 @@
-//  Created by Alexander Skorulis on 10/9/2025.
+//Created by Alexander Skorulis on 27/9/2025.
 
 import Combine
 import Foundation
 import QuartzCore
 
-final class GameService: ObservableObject {
+final class GameStore: ObservableObject {
+    @Published var tower: Tower = .init()
     
-    var time: Time = .init()
-    @Published var wave: Wave = .init(number: 1, time: 0, duration: 1)
+    @Published var wave: Wave = .empty
     
-    func start(params: LevelParameters) {
+    @Published var level: Level
+    @Published var levelParameters: LevelParameters
+    
+    @Published var time: Time = .init()
+    
+    init() {
+        self.level = .one
+        self.levelParameters = Level.one.params
+    }
+    
+    func start(level: Level) {
+        self.level = level
+        self.levelParameters = levelParameters
         
         wave = .init(
             number: 1,
             time: 0,
-            duration: params.waveDuration
+            duration: levelParameters.waveDuration
         )
         // Initialize time tracking
         time = .init()
@@ -25,7 +37,7 @@ final class GameService: ObservableObject {
         time.update(currentTime)
         wave.add(delta: time.deltaTime)
     }
-
+    
 }
 
 struct Time {

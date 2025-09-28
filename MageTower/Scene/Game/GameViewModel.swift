@@ -9,34 +9,47 @@ import SwiftUI
     
     let scene: GameScene
     let spawnService: SpawnService
-    let gameService: GameService
     let enemyService: EnemyService
+    let gameStore: GameStore
     
-    let level: Level
-    let levelParameters: LevelParameters
-    
-    var wave: Wave = .empty
+    let upgradeViewModel: InGameUpgradeViewModel
     
     var cancellables = Set<AnyCancellable>()
     
+    var tower: Tower
+    
+    var wave: Wave
+    
     @Resolvable<MageTowerResolver>
-    init(gameService: GameService, enemyService: EnemyService, spawnService: SpawnService) {
-        self.gameService = gameService
+    init(
+        enemyService: EnemyService,
+        spawnService: SpawnService,
+        gameStore: GameStore,
+        upgradeViewModel: InGameUpgradeViewModel
+    ) {
         self.enemyService = enemyService
         self.spawnService = spawnService
-        self.level = .one
-        self.levelParameters = level.params
+        self.gameStore = gameStore
+        self.upgradeViewModel = upgradeViewModel
         scene = GameScene(size: UIScreen.main.bounds.size, enemyService: enemyService)
-        scene.onUpdate = { [weak self] time in
-            self?.onUpdate(time)
-        }
         
-        gameService.$wave.sink { [unowned self] wave in
-            self.wave = wave
+        gameStore.start(level: .one)
+        self.tower = gameStore.tower
+        self.wave = gameStore.wave
+        
+        gameStore.$tower.sink { [unowned self] in
+            self.tower = $0
         }
         .store(in: &cancellables)
         
-        gameService.start(params: levelParameters)
+        gameStore.$wave.sink { [unowned self] in
+            self.wave = $0
+        }
+        .store(in: &cancellables)
+        
+        scene.onUpdate = { [weak self] time in
+            self?.onUpdate(time)
+        }
     }
 }
 
@@ -45,11 +58,11 @@ import SwiftUI
 extension GameViewModel {
     
     func onUpdate(_ time: TimeInterval) {
-        gameService.update(time)
-        if gameService.time.lastUpdateTime > enemyService.lastSpawn + levelParameters.spawnRate {
-            var enemy = spawnService.spawn(levelParams: levelParameters, wave: wave.number)
+        gameStore.update(time)
+        if gameStore.time.lastUpdateTime > enemyService.lastSpawn + gameStore.levelParameters.spawnRate {
+            var enemy = spawnService.spawn(levelParams: gameStore.levelParameters, wave: wave.number)
             scene.add(enemy: &enemy)
-            enemyService.add(enemy: enemy, time: gameService.time.lastUpdateTime)
+            enemyService.add(enemy: enemy, time: gameStore.time.lastUpdateTime)
         }
     }
 }

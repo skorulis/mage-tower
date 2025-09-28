@@ -98,8 +98,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             print("Square hit circle: id=\(uuid)")
             
-            enemyService.enemies.removeValue(forKey: uuid)
-            hitNode?.removeFromParent()
+             enemyService.enemies.removeValue(forKey: uuid)
+             hitNode?.removeFromParent()
             
         } else if categories == (PhysicsCategory.bullet | PhysicsCategory.square) {
             let squareBody = contact.bodyA.categoryBitMask == PhysicsCategory.square ? contact.bodyA : contact.bodyB
