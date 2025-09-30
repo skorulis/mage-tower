@@ -18,6 +18,7 @@ extension WaveProgressBox: View {
         InfoBox {
             VStack(alignment: .leading) {
                 Text("❤️ \(enemyHealth)")
+                Text("🗡️ \(enemyDamage)")
                 Text("Wave \(wave.number)")
                 progress
             }
@@ -26,6 +27,11 @@ extension WaveProgressBox: View {
     
     private var enemyHealth: String {
         let value = levelParams.health(wave: wave.number)
+        return CompactNumberFormatter().string(value)
+    }
+    
+    private var enemyDamage: String {
+        let value = levelParams.damage(wave: wave.number)
         return CompactNumberFormatter().string(value)
     }
     

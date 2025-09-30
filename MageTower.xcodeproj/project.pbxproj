@@ -12,6 +12,7 @@
 		FA81A1872E71895100A84409 /* KnitMacros in Frameworks */ = {isa = PBXBuildFile; productRef = FA81A1862E71895100A84409 /* KnitMacros */; };
 		FA81A18F2E718A0800A84409 /* knitconfig.json in Resources */ = {isa = PBXBuildFile; fileRef = FA81A18E2E718A0800A84409 /* knitconfig.json */; };
 		FA81A1C22E740FC600A84409 /* ASKCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = FA81A1C12E740FC600A84409 /* ASKCoordinator */; };
+		FAB465B92E89003F00046F67 /* ASKCore in Frameworks */ = {isa = PBXBuildFile; productRef = FAB465B82E89003F00046F67 /* ASKCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAB465B92E89003F00046F67 /* ASKCore in Frameworks */,
 				FA81A1C22E740FC600A84409 /* ASKCoordinator in Frameworks */,
 				FA4F8FCA2E769D8300F78A1C /* Compactor in Frameworks */,
 				FA81A1852E71895100A84409 /* Knit in Frameworks */,
@@ -132,6 +134,7 @@
 				FA81A1862E71895100A84409 /* KnitMacros */,
 				FA81A1C12E740FC600A84409 /* ASKCoordinator */,
 				FA4F8FC92E769D8300F78A1C /* Compactor */,
+				FAB465B82E89003F00046F67 /* ASKCore */,
 			);
 			productName = MageTower;
 			productReference = FA81A1662E716AD600A84409 /* MageTower.app */;
@@ -169,6 +172,7 @@
 				FA81A1832E71895100A84409 /* XCRemoteSwiftPackageReference "knit" */,
 				FA81A1C02E740FC600A84409 /* XCRemoteSwiftPackageReference "ASKCoordinator" */,
 				FA4F8FC82E769D8300F78A1C /* XCRemoteSwiftPackageReference "SwiftCompactor" */,
+				FAB465B72E89003F00046F67 /* XCRemoteSwiftPackageReference "ASKCore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA81A1672E716AD600A84409 /* Products */;
@@ -513,6 +517,14 @@
 				kind = branch;
 			};
 		};
+		FAB465B72E89003F00046F67 /* XCRemoteSwiftPackageReference "ASKCore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/skorulis/ASKCore";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -540,6 +552,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA81A1C02E740FC600A84409 /* XCRemoteSwiftPackageReference "ASKCoordinator" */;
 			productName = ASKCoordinator;
+		};
+		FAB465B82E89003F00046F67 /* ASKCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAB465B72E89003F00046F67 /* XCRemoteSwiftPackageReference "ASKCore" */;
+			productName = ASKCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

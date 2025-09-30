@@ -1,5 +1,6 @@
 //  Created by Alexander Skorulis on 10/9/2025.
 
+import ASKCore
 import Foundation
 import Knit
 import SwiftUI
@@ -11,9 +12,7 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
     
     @MainActor func assemble(container: Container<TargetResolver>) {        
         container.register(EnemyService.self) { EnemyService.make(resolver: $0) }
-        
         container.register(SpawnService.self) { _ in SpawnService() }
-        
         container.register(GamePathRenderer.self) { GamePathRenderer(resolver: $0) }
         
         registerViewModels(container: container)
@@ -21,10 +20,16 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
     }
     
     private func registerStores(container: Container<TargetResolver>) {
-        container.register(GameStore.self) { _ in
-            GameStore()
+        // @knit ignore
+        container.register(PKeyValueStore.self) { _ in
+            UserDefaults.standard
         }
-        .inObjectScope(.container)
+        
+        container.register(GameStore.self) { _ in GameStore() }
+            .inObjectScope(.container)
+        
+        container.register(PersistentStore.self) { PersistentStore.make(resolver: $0) }
+            .inObjectScope(.container)
     }
     
     private func registerViewModels(container: Container<TargetResolver>) {

@@ -16,12 +16,31 @@ import SwiftUI
 extension GameView: View {
     
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack(alignment: .center) {
             SpriteView(scene: viewModel.scene)
                 .ignoresSafeArea()
-                
+            buttonOverlay
+        }
+        .navigationBarHidden(true)
+    }
+    
+    private var buttonOverlay: some View {
+        VStack {
+            topBar
+            Spacer()
             bottomButtons
         }
+    }
+    
+    private var topBar: some View {
+        HStack {
+            VStack {
+                Text("👻: \(CompactNumberFormatter().string(viewModel.upgrades.essence))")
+                    .foregroundStyle(Color.white)
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 16)
     }
     
     private var bottomButtons: some View {
@@ -42,7 +61,6 @@ extension GameView: View {
             }
             InGameUpgradeView(viewModel: viewModel.upgradeViewModel)
         }
-        .padding(.horizontal, 16)
     }
 }
 

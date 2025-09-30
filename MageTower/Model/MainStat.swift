@@ -2,9 +2,10 @@
 
 import Foundation
 
-enum MainStat: String, CaseIterable {
+enum MainStat: String, CaseIterable, Codable {
     case health
     case damage
+    case essenceConversion
     
     func value(level: Int) -> Double {
         return baseValue * pow(Double(level), growthFactor)
@@ -21,6 +22,8 @@ enum MainStat: String, CaseIterable {
             return 1.01
         case .damage:
             return 1.01
+        case .essenceConversion:
+            return 2
         }
     }
     
@@ -29,6 +32,8 @@ enum MainStat: String, CaseIterable {
         case .health:
             return 1.02
         case .damage:
+            return 1.02
+        case .essenceConversion:
             return 1.02
         }
     }
@@ -39,6 +44,8 @@ enum MainStat: String, CaseIterable {
             return 10
         case .damage:
             return 10
+        case .essenceConversion:
+            return 40
         }
     }
     
@@ -48,6 +55,8 @@ enum MainStat: String, CaseIterable {
             return 100
         case .damage:
             return 10
+        case .essenceConversion:
+            return 0.1
         }
     }
 }

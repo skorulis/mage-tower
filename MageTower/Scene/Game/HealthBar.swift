@@ -49,7 +49,7 @@ extension HealthBar: View {
     }
     
     private var healthFraction: Double {
-        return currentHealth / maxHealth
+        return max(currentHealth / maxHealth, 0)
     }
 }
 

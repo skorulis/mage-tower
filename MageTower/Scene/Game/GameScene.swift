@@ -96,6 +96,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
              // enemyService.enemies.removeValue(forKey: uuid)
              // hitNode?.removeFromParent()
+            enemyService.startContact(id: uuid)
             
         } else if categories == (PhysicsCategory.bullet | PhysicsCategory.square) {
             let squareBody = contact.bodyA.categoryBitMask == PhysicsCategory.square ? contact.bodyA : contact.bodyB
@@ -111,7 +112,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
-        print("Did End")
+        let categories = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        if categories == (PhysicsCategory.circle | PhysicsCategory.square) {
+            let squareBody = contact.bodyA.categoryBitMask == PhysicsCategory.square ? contact.bodyA : contact.bodyB
+            
+            guard let uuid = squareBody.node?.userData?["id"] as? UUID else {
+                return
+            }
+            enemyService.contacts.removeValue(forKey: uuid)
+        }
     }
     
     private func didKill(enemy: Enemy) {

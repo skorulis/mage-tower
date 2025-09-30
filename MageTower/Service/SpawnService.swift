@@ -14,6 +14,7 @@ final class SpawnService {
         let y = spawnRadius * sin(angle)
         return .init(
             spawnPosition: CGPoint(x: x, y: y),
+            wave: wave,
             health: health
         )
     }
