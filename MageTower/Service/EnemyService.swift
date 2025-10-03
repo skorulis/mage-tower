@@ -14,7 +14,7 @@ final class EnemyService {
     var enemies: [UUID: Enemy] = [:]
     var contacts: [UUID: TimeInterval] = [:]
     var enemyCount: Int { enemies.count }
-    var lastSpawn: TimeInterval = 0
+    var spawnTime: TimeInterval = 0
     
     private var tower: Tower
     
@@ -38,7 +38,6 @@ final class EnemyService {
     
     func add(enemy: Enemy, time: TimeInterval) {
         enemies[enemy.id] = enemy
-        lastSpawn = time
     }
     
     // Return true if the enemy is dead

@@ -19,6 +19,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.enemyService = enemyService
         super.init(size: size)
         scaleMode = .resizeFill
+        physicsWorld.speed = 3
     }
 
     required init?(coder aDecoder: NSCoder) { nil }
@@ -39,15 +40,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         tower.physicsBody?.categoryBitMask = PhysicsCategory.circle
         tower.physicsBody?.contactTestBitMask = PhysicsCategory.square
         addChild(tower)
-
-        // Fire a bullet every 1 second toward a random square
-        let fireAction = SKAction.sequence([
-            SKAction.wait(forDuration: 0.5),
-            SKAction.run { [weak self] in
-                self?.fireBullet()
-            }
-        ])
-        run(SKAction.repeatForever(fireAction), withKey: "fireTimer")
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -88,14 +80,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let categories = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         if categories == (PhysicsCategory.circle | PhysicsCategory.square) {
             let squareBody = contact.bodyA.categoryBitMask == PhysicsCategory.square ? contact.bodyA : contact.bodyB
-            let hitNode = squareBody.node as? SKShapeNode
             guard let uuid = squareBody.node?.userData?["id"] as? UUID else {
                 return
             }
             print("Square hit circle: id=\(uuid)")
             
-             // enemyService.enemies.removeValue(forKey: uuid)
-             // hitNode?.removeFromParent()
             enemyService.startContact(id: uuid)
             
         } else if categories == (PhysicsCategory.bullet | PhysicsCategory.square) {
@@ -169,7 +158,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         particleNode.run(removeAction)
     }
 
-    private func fireBullet() {
+    func fireBullet() {
         guard !enemyService.enemies.isEmpty else { return }
         guard let target = enemyService.closest()?.node else { return }
 

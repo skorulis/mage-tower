@@ -45,6 +45,7 @@ extension GameView: View {
     
     private var bottomButtons: some View {
         VStack {
+            SpeedAdjuster(speed: $viewModel.speed)
             Grid(horizontalSpacing: 8) {
                 GridRow {
                     TowerStatsBox(

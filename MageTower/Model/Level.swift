@@ -2,13 +2,30 @@
 
 import Foundation
 
-enum Level {
+enum Level: CaseIterable, CustomStringConvertible {
     case one
+    case two
+    case three
     
     var params: LevelParameters {
         switch self {
         case .one:
             return LevelParamsLibrary.one
+        case .two:
+            return LevelParamsLibrary.one
+        case .three:
+            return LevelParamsLibrary.one
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .one:
+            return "Level 1"
+        case .two:
+            return "Level 2"
+        case .three:
+            return "Level 3"
         }
     }
 }

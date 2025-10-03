@@ -12,6 +12,8 @@ import SwiftUI
     
     private let gameStore: GameStore
     
+    var level: Level = .one
+    
     @Resolvable<MageTowerResolver>
     init(gameStore: GameStore) {
         self.gameStore = gameStore
@@ -23,7 +25,7 @@ import SwiftUI
 extension MainMenuViewModel {
     
     func start() {
-        gameStore.start(level: .one)
+        gameStore.start(level: level)
         coordinator?.push(GamePath.game)
     }
     

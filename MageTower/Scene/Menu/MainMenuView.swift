@@ -27,6 +27,13 @@ extension MainMenuView: View {
             Button(action: viewModel.start) {
                 Text("Start")
             }
+            
+            StepperPicker(
+                value: $viewModel.level,
+                options: Level.allCases) {
+                    Text("\($0.description)")
+            }
+            .foregroundStyle(Color.black)
         }
     }
 }

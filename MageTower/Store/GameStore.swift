@@ -34,9 +34,9 @@ final class GameStore: ObservableObject {
         tower.currentHealth = tower.value(.health)
     }
     
-    func update(_ currentTime: TimeInterval) {
+    func update(currentTime: TimeInterval, speed: Double) {
         // Calculate delta time (time since last frame)
-        time.update(currentTime)
+        time.update(currentTime: currentTime, speed: speed)
         wave.add(delta: time.deltaTime)
     }
     
@@ -54,10 +54,10 @@ struct Time {
         lastUpdateTime = gameStartTime
     }
     
-    mutating func update(_ currentTime: TimeInterval) {
+    mutating func update(currentTime: TimeInterval, speed: Double) {
         // Calculate delta time (time since last frame)
         
-        deltaTime = currentTime - lastUpdateTime
+        deltaTime = (currentTime - lastUpdateTime) * speed
         lastUpdateTime = currentTime
 
         // Add to total game time
