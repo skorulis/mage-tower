@@ -13,6 +13,7 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
     @MainActor func assemble(container: Container<TargetResolver>) {        
         container.register(EnemyService.self) { EnemyService.make(resolver: $0) }
         container.register(SpawnService.self) { _ in SpawnService() }
+        container.register(WeaponService.self) { WeaponService.make(resolver: $0) }
         container.register(GamePathRenderer.self) { GamePathRenderer(resolver: $0) }
         
         registerViewModels(container: container)

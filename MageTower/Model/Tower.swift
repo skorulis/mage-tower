@@ -7,6 +7,8 @@ struct Tower {
     var xp: Double = 0
     var currentHealth: Double = 0
     
+    var range: CGFloat { 200 }
+    
     func level(_ stat: MainStat) -> Int {
         return statLevel[stat] ?? 1
     }

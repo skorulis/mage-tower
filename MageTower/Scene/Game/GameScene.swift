@@ -2,7 +2,7 @@
 
 import SpriteKit
 
-private struct PhysicsCategory {
+struct PhysicsCategory {
     static let circle: UInt32 = 0x1 << 0
     static let square: UInt32 = 0x1 << 1
     static let bullet: UInt32 = 0x1 << 2
@@ -12,14 +12,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private let enemyService: EnemyService
     
-    private var tower: SKShapeNode = SKShapeNode(circleOfRadius: 32)
-    var onUpdate: ((TimeInterval) -> Void)?
+    private var tower = TowerNode(size: 24)
     
-    init(size: CGSize, enemyService: EnemyService) {
+    private var rangeMarker = RangeMarkerNode()
+    
+    var onUpdate: ((TimeInterval) -> Time?)?
+    
+    init(size: CGSize, enemyService: EnemyService, speed: CGFloat) {
         self.enemyService = enemyService
         super.init(size: size)
         scaleMode = .resizeFill
-        physicsWorld.speed = 3
+        physicsWorld.speed = speed
     }
 
     required init?(coder aDecoder: NSCoder) { nil }
@@ -32,18 +35,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Center the scene's coordinate system so (0,0) is at the middle of the view
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
 
-        tower.fillColor = .white
-        tower.strokeColor = .clear
-        tower.position = .zero
-        tower.physicsBody = SKPhysicsBody(circleOfRadius: 32)
-        tower.physicsBody?.isDynamic = false
-        tower.physicsBody?.categoryBitMask = PhysicsCategory.circle
-        tower.physicsBody?.contactTestBitMask = PhysicsCategory.square
         addChild(tower)
+        
+        // Add range marker
+        rangeMarker.position = .zero
+        addChild(rangeMarker)
     }
 
     override func update(_ currentTime: TimeInterval) {
-        onUpdate?(currentTime)
+        guard let time = onUpdate?(currentTime) else {
+            return
+        }
         for enemy in enemyService.enemies.values {
             guard let square = enemy.node, let body = square.physicsBody else {
                 continue
@@ -52,7 +54,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                     dy: tower.position.y - square.position.y)
             let distance = max(1.0, sqrt(toCircle.dx * toCircle.dx + toCircle.dy * toCircle.dy))
             let normalized = CGVector(dx: toCircle.dx / distance, dy: toCircle.dy / distance)
-            let forceMagnitude: CGFloat = 5.0
+            let forceMagnitude: CGFloat = 50.0 * time.deltaTime
             let force = CGVector(dx: normalized.dx * forceMagnitude, dy: normalized.dy * forceMagnitude)
             body.applyForce(force)
         }
@@ -113,7 +115,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func didKill(enemy: Enemy) {
-        print("Enemy dead")
         
         // Add particle effect at the enemy's position
         guard let enemyNode = enemy.node else { return }
@@ -162,18 +163,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         guard !enemyService.enemies.isEmpty else { return }
         guard let target = enemyService.closest()?.node else { return }
 
-        let start = tower.position
-        let targetPos = target.position
-        let dx = targetPos.x - start.x
-        let dy = targetPos.y - start.y
-        let distance = max(1.0, sqrt(dx * dx + dy * dy))
-        let dir = CGVector(dx: dx / distance, dy: dy / distance)
-
         let bulletRadius: CGFloat = 4
         let bullet = SKShapeNode(circleOfRadius: bulletRadius)
+        
         bullet.fillColor = .cyan
         bullet.strokeColor = .clear
-        bullet.position = start
+        bullet.position = tower.position
         bullet.physicsBody = SKPhysicsBody(circleOfRadius: bulletRadius)
         bullet.physicsBody?.affectedByGravity = false
         bullet.physicsBody?.allowsRotation = false
@@ -183,17 +178,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bullet.physicsBody?.usesPreciseCollisionDetection = true
         addChild(bullet)
 
-        let speed: CGFloat = 300 // points per second
-        let travelDistance: CGFloat = 2000 // ensure it goes off-screen
-        let endPoint = CGPoint(
-            x: start.x + dir.dx * travelDistance,
-            y: start.y + dir.dy * travelDistance
-        )
-        let duration = TimeInterval(travelDistance / speed)
-        bullet.run(SKAction.sequence([
-            SKAction.move(to: endPoint, duration: duration),
-            SKAction.removeFromParent()
-        ]))
+        let toTarget = CGVector(dx: target.position.x - bullet.position.x,
+                                dy: target.position.y - bullet.position.y)
+        let distance = max(1.0, sqrt(toTarget.dx * toTarget.dx + toTarget.dy * toTarget.dy))
+        let normalized = CGVector(dx: toTarget.dx / distance, dy: toTarget.dy / distance)
+        let forceMagnitude: CGFloat = 50.0
+        let force = CGVector(dx: normalized.dx * forceMagnitude, dy: normalized.dy * forceMagnitude)
+        bullet.physicsBody?.applyForce(force)
+    }
+    
+    func updateRange(_ range: CGFloat) {
+        rangeMarker.range = range
     }
 }
 

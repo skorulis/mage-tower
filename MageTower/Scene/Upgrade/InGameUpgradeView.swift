@@ -1,6 +1,7 @@
 //  Created by Alexander Skorulis on 24/9/2025.
 
 import Foundation
+import Knit
 import SwiftUI
 
 // MARK: - Memory footprint
@@ -14,11 +15,25 @@ import SwiftUI
 extension InGameUpgradeView: View {
     
     var body: some View {
-        Grid {
-            ForEach(statChunks.indices, id: \.self) { index in
-                row(items: statChunks[index])
+        VStack {
+            if viewModel.isOpen {
+                Grid {
+                    ForEach(statChunks.indices, id: \.self) { index in
+                        row(items: statChunks[index])
+                    }
+                }
+                .transition(
+                    AnyTransition
+                        .move(edge: .bottom)
+                        .combined(with: .opacity)
+                )
+                
             }
+            tabs
+            Color.clear
+                .frame(height: 1)
         }
+        .animation(.default, value: viewModel.isOpen)
     }
     
     private func row(items: [MainStat]) -> some View {
@@ -48,12 +63,26 @@ extension InGameUpgradeView: View {
     private var statChunks: [[MainStat]] {
         MainStat.allCases.chunked(into: 2)
     }
+    
+    private var tabs: some View {
+        HStack {
+            Button(action: { viewModel.isOpen.toggle() }) {
+                InfoBox {
+                    Text("Toggle")
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Previews
 
-//#Preview {
-//    let assembler = MageTowerAssembly.testing()
-//    InGameUpgradeView(viewModel: assembler.inGameUpgradeViewModel())
-//}
-//
+#Preview {
+    let assembler = MageTowerAssembly.testing()
+    VStack {
+        Spacer()
+        InGameUpgradeView(viewModel: assembler.resolver.inGameUpgradeViewModel())
+    }
+    
+}
+

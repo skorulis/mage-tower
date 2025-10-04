@@ -91,11 +91,15 @@ final class EnemyService {
     func closest() -> Enemy? {
         var best: Enemy?
         var bestValue: CGFloat = .infinity
+        let rangeSquared = gameStore.tower.range * gameStore.tower.range
         for enemy in enemies.values {
             guard let pos = enemy.node?.position else {
                 continue
             }
             let dist = (pos.x * pos.x) + (pos.y * pos.y)
+            if dist > rangeSquared {
+                continue
+            }
             if dist < bestValue {
                 best = enemy
                 bestValue = dist

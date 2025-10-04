@@ -8,6 +8,8 @@ import KnitMacros
     
     private let gameStore: GameStore
     
+    var isOpen: Bool = true
+    
     var tower: Tower
     
     var cancellables: Set<AnyCancellable> = []

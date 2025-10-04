@@ -11,6 +11,7 @@ import SwiftUI
     let scene: GameScene
     let spawnService: SpawnService
     let enemyService: EnemyService
+    let weaponService: WeaponService
     let gameStore: GameStore
     let persistentStore: PersistentStore
     let upgradeViewModel: InGameUpgradeViewModel
@@ -21,9 +22,13 @@ import SwiftUI
     var wave: Wave
     var upgrades: GameUpgrades
     
-    var toShoot: TimeInterval = 0.5
+    var sceneSize: CGSize = .zero {
+        didSet {
+            scene.size = sceneSize
+        }
+    }
     
-    var speed: Double = 1 {
+    var speed: Double {
         didSet {
             scene.physicsWorld.speed = CGFloat(speed)
         }
@@ -32,17 +37,24 @@ import SwiftUI
     @Resolvable<MageTowerResolver>
     init(
         enemyService: EnemyService,
+        weaponService: WeaponService,
         spawnService: SpawnService,
         gameStore: GameStore,
         persistentStore: PersistentStore,
         upgradeViewModel: InGameUpgradeViewModel
     ) {
         self.enemyService = enemyService
+        self.weaponService = weaponService
         self.spawnService = spawnService
         self.gameStore = gameStore
         self.persistentStore = persistentStore
         self.upgradeViewModel = upgradeViewModel
-        scene = GameScene(size: UIScreen.main.bounds.size, enemyService: enemyService)
+        self.speed = 1
+        scene = GameScene(
+            size: UIScreen.main.bounds.size,
+            enemyService: enemyService,
+            speed: 1,
+        )
         
         gameStore.start(level: .one)
         self.tower = gameStore.tower
@@ -51,6 +63,7 @@ import SwiftUI
         
         gameStore.$tower.sink { [unowned self] in
             self.tower = $0
+            self.scene.updateRange($0.range)
         }
         .store(in: &cancellables)
         
@@ -67,6 +80,9 @@ import SwiftUI
         scene.onUpdate = { [weak self] time in
             self?.onUpdate(time)
         }
+        
+        // Set initial range
+        scene.updateRange(tower.range)
     }
 }
 
@@ -74,12 +90,13 @@ import SwiftUI
 
 extension GameViewModel {
     
-    func onUpdate(_ time: TimeInterval) {
+    func onUpdate(_ time: TimeInterval) -> Time{
         gameStore.update(currentTime: time, speed: speed)
         enemyService.updateHits(delta: gameStore.time.deltaTime)
-        maybeSpawn()
+        maybeSpawnEnemy()
         maybeShoot()
         checkDeath()
+        return self.gameStore.time
     }
     
     private func checkDeath() {
@@ -89,14 +106,14 @@ extension GameViewModel {
     }
     
     private func maybeShoot() {
-        toShoot -= gameStore.time.deltaTime
-        if toShoot <= 0 {
-            toShoot += 0.5
+        weaponService.fireTime += gameStore.time.deltaTime
+        if weaponService.fireTime >= 0.5 {
+            weaponService.fireTime -= 0.5
             scene.fireBullet()
         }
     }
     
-    private func maybeSpawn() {
+    private func maybeSpawnEnemy() {
         guard enemyService.enemyCount < gameStore.levelParameters.enemyCap else {
             return
         }
@@ -108,4 +125,5 @@ extension GameViewModel {
             enemyService.add(enemy: enemy, time: gameStore.time.lastUpdateTime)
         }
     }
+    
 }

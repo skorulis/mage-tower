@@ -16,10 +16,14 @@ import SwiftUI
 extension GameView: View {
     
     var body: some View {
-        ZStack(alignment: .center) {
-            SpriteView(scene: viewModel.scene)
-                .ignoresSafeArea()
-            buttonOverlay
+        VStack(spacing: 0) {
+            ZStack(alignment: .center) {
+                SpriteView(scene: viewModel.scene)
+                    .ignoresSafeArea()
+                    .readSize(size: $viewModel.sceneSize)
+                buttonOverlay
+            }
+            upgrades
         }
         .navigationBarHidden(true)
     }
@@ -60,8 +64,13 @@ extension GameView: View {
                     )
                 }
             }
-            InGameUpgradeView(viewModel: viewModel.upgradeViewModel)
+            
         }
+    }
+    
+    private var upgrades: some View {
+        InGameUpgradeView(viewModel: viewModel.upgradeViewModel)
+            .background(Color.black)
     }
 }
 
