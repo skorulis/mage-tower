@@ -41,6 +41,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rangeMarker.position = .zero
         addChild(rangeMarker)
     }
+    
+    func updateRangeRing(_ range: CGFloat) {
+        rangeMarker.range = range
+    }
 
     override func update(_ currentTime: TimeInterval) {
         guard let time = onUpdate?(currentTime) else {

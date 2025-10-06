@@ -8,6 +8,7 @@ public enum GamePath: CoordinatorPath {
  
     case mainMenu
     case game
+    case levelCharts
     
     public var id: String {
         String(describing: self)
@@ -26,6 +27,8 @@ public struct GamePathRenderer: CoordinatorPathRenderer {
             MainMenuView(viewModel: coordinator.apply(resolver.mainMenuViewModel()))
         case .game:
             GameView(viewModel: coordinator.apply(resolver.gameViewModel()))
+        case .levelCharts:
+            LevelChartsView(viewModel: coordinator.apply(resolver.levelChartsViewModel()))
         }
     }
 }

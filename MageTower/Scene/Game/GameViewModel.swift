@@ -56,7 +56,6 @@ import SwiftUI
             speed: 1,
         )
         
-        gameStore.start(level: .one)
         self.tower = gameStore.tower
         self.wave = gameStore.wave
         self.upgrades = persistentStore.upgrades

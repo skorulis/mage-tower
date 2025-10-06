@@ -15,11 +15,15 @@ import SwiftUI
 extension MainMenuView: View {
     
     var body: some View {
-        PageLayout(titleBar: { header }, content: { content }, footer: { EmptyView() })
+        PageLayout(
+            titleBar: { header },
+            content: { content },
+            footer: { EmptyView() }
+        )
     }
     
     private var header: some View {
-        Text("Main Menu")
+        TitleBar(title: "Main Menu")
     }
     
     private var content: some View {
@@ -34,6 +38,10 @@ extension MainMenuView: View {
                     Text("\($0.description)")
             }
             .foregroundStyle(Color.black)
+            
+            Button(action: viewModel.showCharts) {
+                Text("Level Charts")
+            }
         }
     }
 }
