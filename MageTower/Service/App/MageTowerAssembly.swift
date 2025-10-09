@@ -38,6 +38,7 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
         container.register(InGameUpgradeViewModel.self) { InGameUpgradeViewModel.make(resolver: $0) }
         container.register(MainMenuViewModel.self) { MainMenuViewModel.make(resolver: $0) }
         container.register(LevelChartsViewModel.self) { LevelChartsViewModel.make(resolver: $0) }
+        container.register(StatChartViewModel.self) { StatChartViewModel.make(resolver: $0) }
     }
     
     static var dependencies: [any Knit.ModuleAssembly.Type] { [] }

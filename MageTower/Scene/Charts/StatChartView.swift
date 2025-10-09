@@ -1,25 +1,20 @@
-//Created by Alexander Skorulis on 4/10/2025.
+//Created by Alexander Skorulis on 9/10/2025.
 
-import ASKCoordinator
 import Charts
 import Foundation
 import Knit
 import SwiftUI
+import ASKCoordinator
 
 // MARK: - Memory footprint
 
-struct ChartDataPoint {
-    let wave: Int
-    let health: Double
-}
-
-@MainActor struct LevelChartsView {
-    @State var viewModel: LevelChartsViewModel
+@MainActor struct StatChartView {
+    @State var viewModel: StatChartViewModel
 }
 
 // MARK: - Rendering
 
-extension LevelChartsView: View {
+extension StatChartView: View {
     
     var body: some View {
         PageLayout {
@@ -37,54 +32,42 @@ extension LevelChartsView: View {
     }
     
     private var content: some View {
-        VStack {
-            StepperPicker(
-                value: $viewModel.level,
-                options: Level.allCases) {
-                    Text("\($0.description)")
-            }
-            .foregroundStyle(Color.black)
-            
+        VStack(spacing: 16) {
             StepperPicker(
                 value: $viewModel.maxLevel,
-                options: LevelChartsViewModel.WaveNumber.allCases) {
+                options: StatChartViewModel.StatLevel.allCases) {
                     Text("\($0.rawValue)")
             }
             .foregroundStyle(Color.black)
             
             chart
         }
+        .padding(16)
     }
     
     private var chart: some View {
         VStack(alignment: .leading) {
-            Text("Enemy Health")
+            Text("Cost")
                 .font(.headline)
                 .padding(.bottom, 8)
             
-            Chart(viewModel.chartData, id: \.wave) { dataPoint in
+            Chart(viewModel.chartCostData, id: \.wave) { dataPoint in
                 LineMark(
-                    x: .value("Wave", dataPoint.wave),
-                    y: .value("Health", dataPoint.health)
+                    x: .value("Level", dataPoint.wave),
+                    y: .value("Cost", dataPoint.health)
                 )
                 .foregroundStyle(.blue)
                 .lineStyle(StrokeStyle(lineWidth: 2))
                 
                 PointMark(
-                    x: .value("Wave", dataPoint.wave),
-                    y: .value("Health", dataPoint.health)
+                    x: .value("Level", dataPoint.wave),
+                    y: .value("Cost", dataPoint.health)
                 )
                 .foregroundStyle(.blue)
                 .symbolSize(20)
             }
-            
             .frame(height: 300)
-            .padding()
         }
-    }
-    
-    private var maxHealth: Double {
-        viewModel.chartData.map(\.health).max() ?? 50
     }
 }
 
@@ -92,6 +75,6 @@ extension LevelChartsView: View {
 
 #Preview {
     let assembler = MageTowerAssembly.testing()
-    LevelChartsView(viewModel: assembler.resolver.levelChartsViewModel())
+    StatChartView(viewModel: assembler.resolver.statChartViewModel())
 }
 

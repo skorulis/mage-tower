@@ -12,7 +12,7 @@ enum Level: CaseIterable, CustomStringConvertible {
         case .one:
             return LevelParamsLibrary.one
         case .two:
-            return LevelParamsLibrary.one
+            return LevelParamsLibrary.two
         case .three:
             return LevelParamsLibrary.one
         }
@@ -35,7 +35,8 @@ struct LevelParameters {
     let spawnRateChange: Double
     
     let baseHealth: Double
-    let healthIncrease: Double
+    let healthIncreaseLinear: Double
+    let healthIncreaseExponential: Double
     
     let baseDamage: Double
     let damageIncrease: Double
@@ -45,7 +46,19 @@ struct LevelParameters {
     var xpMultiplier: Double { 1 }
     
     func health(wave: Int) -> Double {
-        baseHealth * pow(1 + healthIncrease, Double(wave))
+        // For the first 100 waves, use linear increase, then blend into exponential
+        if wave <= 100 {
+            return baseHealth + Double(wave) * (baseHealth * healthIncreaseLinear)
+        } else {
+            // Calculate health at wave 100 using linear formula
+            let linearHealth = baseHealth + 100 * (baseHealth * healthIncreaseLinear)
+            // Calculate what the exponential would be at wave 100
+            let expAt100 = baseHealth * pow(1 + healthIncreaseExponential, 100)
+            // Find a multiplier to blend smoothly from linear to exponential
+            let blendMultiplier = linearHealth / expAt100
+            // Use exponential for wave > 100, scaled so it's continuous at wave 100
+            return blendMultiplier * baseHealth * pow(1 + healthIncreaseExponential, Double(wave))
+        }
     }
     
     func damage(wave: Int) -> Double {
@@ -59,7 +72,20 @@ enum LevelParamsLibrary {
             spawnRate: 1,
             spawnRateChange: 0.01,
             baseHealth: 2,
-            healthIncrease: 0.2,
+            healthIncreaseLinear: 0.2,
+            healthIncreaseExponential: 0.02,
+            baseDamage: 2,
+            damageIncrease: 0.1,
+        )
+    }
+    
+    static var two: LevelParameters {
+        LevelParameters(
+            spawnRate: 1,
+            spawnRateChange: 0.01,
+            baseHealth: 10,
+            healthIncreaseLinear: 0.2,
+            healthIncreaseExponential: 0.02,
             baseDamage: 2,
             damageIncrease: 0.1,
         )
