@@ -4,6 +4,7 @@ import ASKCoordinator
 import Combine
 import Knit
 import KnitMacros
+import SpriteKit
 import SwiftUI
 
 @Observable final class GameViewModel: CoordinatorViewModel {
@@ -97,6 +98,7 @@ import SwiftUI
 extension GameViewModel {
     enum Dialog: Equatable {
         case statistics
+        case finish
     }
 }
 
@@ -108,7 +110,10 @@ extension GameViewModel {
         dialog = .statistics
     }
     
-    func onUpdate(_ time: TimeInterval) -> Time{
+    func onUpdate(_ time: TimeInterval) -> Time? {
+        if scene.isPaused {
+            return nil
+        }
         gameStore.update(currentTime: time, speed: speed)
         enemyService.updateHits(delta: gameStore.time.deltaTime)
         maybeSpawnEnemy()
@@ -119,7 +124,8 @@ extension GameViewModel {
     
     private func checkDeath() {
         if tower.currentHealth <= 0 {
-            coordinator?.pop()
+            self.dialog = .finish
+            self.scene.isPaused = true
         }
     }
     

@@ -1,5 +1,6 @@
 //  Created by Alexander Skorulis on 12/9/2025.
 
+import ASKCoordinator
 import Foundation
 import SpriteKit
 import Knit
@@ -29,6 +30,11 @@ extension GameView: View {
             switch $0 {
             case .statistics:
                 InGameStatsView(stats: viewModel.statistics)
+            case .finish:
+                EndOfRoundDialog(
+                    wave: viewModel.wave,
+                    onFinish: { viewModel.coordinator?.pop() }
+                )
             }
         }
         .navigationBarHidden(true)
