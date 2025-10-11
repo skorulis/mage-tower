@@ -12,7 +12,9 @@ import SwiftUI
     
     var level: Level = .one
     
-    var maxLevel: WaveNumber = .`20`
+    var maxLevel: Int = 20
+    
+    var levelOptions: [Int] = [20, 100, 250, 500, 1000]
     
     @Resolvable<Resolver>
     init() {
@@ -20,32 +22,20 @@ import SwiftUI
     }
 }
 
-// MARK: - Inner Types
-
-extension LevelChartsViewModel {
-    enum WaveNumber: Int, CaseIterable {
-        case `20` = 20
-        case `100` = 100
-        case `250` = 250
-        case `500` = 500
-        case `1000` = 1000
-        
-        var gap: Int {
-            return max(rawValue / 100, 1)
-        }
-    }
-}
-
 // MARK: - Logic
 
 extension LevelChartsViewModel {
+    
+    var gap: Int {
+        return max(maxLevel / 100, 1)
+    }
     
     func health(wave: Int) -> Double {
         level.params.health(wave: wave)
     }
     
     var chartData: [BasicChart.ChartDataPoint] {
-        stride(from: 1, through: maxLevel.rawValue, by: maxLevel.gap).map { wave in
+        stride(from: 1, through: maxLevel, by: gap).map { wave in
             BasicChart.ChartDataPoint(
                 x: wave,
                 y: health(wave: wave)

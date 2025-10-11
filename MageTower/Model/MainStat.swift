@@ -8,33 +8,40 @@ enum MainStat: String, CaseIterable, Codable {
     case essenceConversion
     
     func value(level: Int) -> Double {
-        return baseValue * pow(Double(level), growthFactor)
+        ScalingFunctions.linear(
+            base: baseValue,
+            multiplier: growthFactor,
+            level: level
+        )
     }
     
     func cost(level: Int) -> Double {
-        let multiplier = pow(Double(level), costGrowthFactor)
-        return baseCost * multiplier
+        ScalingFunctions.exponential(
+            base: baseCost,
+            rate: costGrowthFactor,
+            level: level
+        )
     }
     
     var growthFactor: Double {
         switch self {
         case .health:
-            return 1.01
+            return 1.25
         case .damage:
-            return 1.01
+            return 1.25
         case .essenceConversion:
-            return 2
+            return 1.25
         }
     }
     
     var costGrowthFactor: Double {
         switch self {
         case .health:
-            return 1.02
+            return 0.2
         case .damage:
-            return 1.02
+            return 0.2
         case .essenceConversion:
-            return 1.02
+            return 0.5
         }
     }
     

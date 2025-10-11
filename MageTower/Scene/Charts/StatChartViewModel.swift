@@ -12,7 +12,9 @@ import SwiftUI
     
     var stat: MainStat = .damage
     
-    var maxLevel: StatLevel = .`10`
+    var maxLevel: Int = 10
+    
+    var levelOptions: [Int] = [10, 25, 50, 100, 250, 500, 1000]
     
     @Resolvable<Resolver>
     init() {
@@ -20,34 +22,20 @@ import SwiftUI
     }
 }
 
-// MARK: - Inner Types
-
-extension StatChartViewModel {
-    enum StatLevel: Int, CaseIterable {
-        case `10` = 10
-        case `25` = 25
-        case `50` = 50
-        case `100` = 100
-        case `250` = 250
-        case `500` = 500
-        case `1000` = 1000
-        
-        var gap: Int {
-            return max(rawValue / 100, 1)
-        }
-    }
-}
-
 // MARK: - Logic
 
 extension StatChartViewModel {
+    
+    var gap: Int {
+        return max(maxLevel / 100, 1)
+    }
     
     func cost(level: Int) -> Double {
         stat.cost(level: level)
     }
     
     var chartCostData: [BasicChart.ChartDataPoint] {
-        stride(from: 1, through: maxLevel.rawValue, by: maxLevel.gap).map { level in
+        stride(from: 1, through: maxLevel, by: gap).map { level in
             BasicChart.ChartDataPoint(
                 x: level,
                 y: cost(level: level)
@@ -56,7 +44,7 @@ extension StatChartViewModel {
     }
     
     var chartValueData: [BasicChart.ChartDataPoint] {
-        stride(from: 1, through: maxLevel.rawValue, by: maxLevel.gap).map { level in
+        stride(from: 1, through: maxLevel, by: gap).map { level in
             BasicChart.ChartDataPoint(
                 x: level,
                 y: stat.value(level: level)

@@ -35,8 +35,8 @@ extension StatChartView: View {
         VStack(spacing: 16) {
             StepperPicker(
                 value: $viewModel.maxLevel,
-                options: StatChartViewModel.StatLevel.allCases) {
-                    Text("\($0.rawValue)")
+                options: viewModel.levelOptions) {
+                    Text("\($0)")
             }
             .foregroundStyle(Color.black)
             

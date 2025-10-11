@@ -42,8 +42,8 @@ extension LevelChartsView: View {
             
             StepperPicker(
                 value: $viewModel.maxLevel,
-                options: LevelChartsViewModel.WaveNumber.allCases) {
-                    Text("\($0.rawValue)")
+                options: viewModel.levelOptions) {
+                    Text("\($0)")
             }
             .foregroundStyle(Color.black)
             
