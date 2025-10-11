@@ -25,8 +25,11 @@ extension GameView: View {
             }
             upgrades
         }
-        .dialog(isVisible: $viewModel.statsVisible) {
-            InGameStatsView(stats: viewModel.statistics)
+        .dialog(item: $viewModel.dialog) {
+            switch $0 {
+            case .statistics:
+                InGameStatsView(stats: viewModel.statistics)
+            }
         }
         .navigationBarHidden(true)
     }

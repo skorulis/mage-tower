@@ -23,7 +23,7 @@ import SwiftUI
     var upgrades: GameUpgrades
     
     var statistics: GameStatistics
-    var statsVisible: Bool = false
+    var dialog: Dialog?
     
     var sceneSize: CGSize = .zero {
         didSet {
@@ -94,12 +94,18 @@ import SwiftUI
     }
 }
 
+extension GameViewModel {
+    enum Dialog: Equatable {
+        case statistics
+    }
+}
+
 // MARK: - Logic
 
 extension GameViewModel {
     
     func showStats() {
-        statsVisible = true
+        dialog = .statistics
     }
     
     func onUpdate(_ time: TimeInterval) -> Time{

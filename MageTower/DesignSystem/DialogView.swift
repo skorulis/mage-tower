@@ -6,8 +6,7 @@ import SwiftUI
 // MARK: - Memory footprint
 
 @MainActor struct DialogView<Content: View> {
-    
-    @Binding var isVisible: Bool
+    let onDismiss: () -> Void
     let content: () -> Content
     
 }
@@ -17,25 +16,37 @@ import SwiftUI
 extension DialogView: View {
     
     var body: some View {
+        // Dimmed background
+        Color.black.opacity(0.6)
+            .ignoresSafeArea()
+            .onTapGesture {
+                onDismiss()
+            }
+            .transition(.opacity)
+        
+        // Dialog content
+        DialogBox {
+            content()
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 40)
+        .onTapGesture {
+            // Prevent tap from propagating to background
+        }
+    }
+}
+
+struct DialogViewBoolWrapper<Content: View>: View {
+    @Binding var isVisible: Bool
+    let content: () -> Content
+    
+    var body: some View {
         ZStack {
             if isVisible {
-                // Dimmed background
-                Color.black.opacity(0.6)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        isVisible = false
-                    }
-                    .transition(.opacity)
-                
-                // Dialog content
-                DialogBox {
-                    content()
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 40)
-                .onTapGesture {
-                    // Prevent tap from propagating to background
-                }
+                DialogView(
+                    onDismiss: { isVisible = false },
+                    content: content
+                )
                 .transition(.opacity)
             }
         }
@@ -43,11 +54,45 @@ extension DialogView: View {
     }
 }
 
+struct DialogViewItemWrapper<Item: Equatable, Content: View>: View {
+    @Binding var item: Item?
+    let content: (Item) -> Content
+    
+    var body: some View {
+        ZStack {
+            if let value = item {
+                DialogView(
+                    onDismiss: { item = nil },
+                    content: { content(value) }
+                )
+                .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.15), value: item)
+    }
+}
+
 extension View {
     
     func dialog<Content: View>(isVisible: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
-        overlay(
-            DialogView(isVisible: isVisible, content: content)
+        self.overlay(
+            DialogViewBoolWrapper(
+                isVisible: isVisible,
+                content: content
+            )
+        )
+    }
+    
+    @ViewBuilder
+    func dialog<Item: Equatable, Content: View>(
+        item: Binding<Item?>,
+        @ViewBuilder content: @escaping (Item) -> Content
+    ) -> some View {
+        self.overlay(
+            DialogViewItemWrapper(
+                item: item,
+                content: content
+            )
         )
     }
 }
@@ -64,7 +109,7 @@ extension View {
         }
     }
     .overlay(
-        DialogView(isVisible: $dialogVisible) {
+        DialogViewBoolWrapper(isVisible: $dialogVisible) {
             VStack(alignment: .leading, spacing: 16) {
                 Text("Sample Dialog")
                     .font(.title2)
