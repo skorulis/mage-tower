@@ -39,8 +39,12 @@ extension MainMenuView: View {
             }
             .foregroundStyle(Color.black)
             
-            Button(action: viewModel.showCharts) {
+            Button(action: viewModel.showLevelCharts) {
                 Text("Level Charts")
+            }
+            
+            Button(action: viewModel.showStatCharts) {
+                Text("Stat Charts")
             }
         }
     }

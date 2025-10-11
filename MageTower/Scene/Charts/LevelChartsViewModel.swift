@@ -44,11 +44,11 @@ extension LevelChartsViewModel {
         level.params.health(wave: wave)
     }
     
-    var chartData: [ChartDataPoint] {
+    var chartData: [BasicChart.ChartDataPoint] {
         stride(from: 1, through: maxLevel.rawValue, by: maxLevel.gap).map { wave in
-            ChartDataPoint(
-                wave: wave,
-                health: health(wave: wave)
+            BasicChart.ChartDataPoint(
+                x: wave,
+                y: health(wave: wave)
             )
         }
     }

@@ -26,7 +26,7 @@ extension StatChartView: View {
     
     private var titleBar: some View {
         TitleBar(
-            title: "Charts",
+            title: "Stat Charts",
             backAction: { viewModel.coordinator?.pop() }
         )
     }
@@ -51,22 +51,21 @@ extension StatChartView: View {
                 .font(.headline)
                 .padding(.bottom, 8)
             
-            Chart(viewModel.chartCostData, id: \.wave) { dataPoint in
-                LineMark(
-                    x: .value("Level", dataPoint.wave),
-                    y: .value("Cost", dataPoint.health)
-                )
-                .foregroundStyle(.blue)
-                .lineStyle(StrokeStyle(lineWidth: 2))
-                
-                PointMark(
-                    x: .value("Level", dataPoint.wave),
-                    y: .value("Cost", dataPoint.health)
-                )
-                .foregroundStyle(.blue)
-                .symbolSize(20)
-            }
-            .frame(height: 300)
+            BasicChart(
+                data: viewModel.chartCostData,
+                xLabel: "Level",
+                yLabel: "Cost"
+            )
+            
+            Text(viewModel.stat.name)
+                .font(.headline)
+                .padding(.bottom, 8)
+            
+            BasicChart(
+                data: viewModel.chartValueData,
+                xLabel: "Level",
+                yLabel: viewModel.stat.name,
+            )
         }
     }
 }

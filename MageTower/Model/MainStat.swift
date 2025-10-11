@@ -38,6 +38,17 @@ enum MainStat: String, CaseIterable, Codable {
         }
     }
     
+    var name: String {
+        switch self {
+        case .health:
+            return "Health"
+        case .damage:
+            return "Damage"
+        case .essenceConversion:
+            return "Essence Conversion"
+        }
+    }
+    
     var baseCost: Double {
         switch self {
         case .health:

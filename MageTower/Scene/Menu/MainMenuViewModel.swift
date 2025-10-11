@@ -29,8 +29,12 @@ extension MainMenuViewModel {
         coordinator?.push(GamePath.game)
     }
     
-    func showCharts() {
+    func showLevelCharts() {
         coordinator?.push(GamePath.levelCharts)
+    }
+    
+    func showStatCharts() {
+        coordinator?.push(GamePath.statCharts)
     }
     
 }

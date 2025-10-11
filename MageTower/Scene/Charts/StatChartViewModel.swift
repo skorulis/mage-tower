@@ -46,11 +46,20 @@ extension StatChartViewModel {
         stat.cost(level: level)
     }
     
-    var chartCostData: [ChartDataPoint] {
+    var chartCostData: [BasicChart.ChartDataPoint] {
         stride(from: 1, through: maxLevel.rawValue, by: maxLevel.gap).map { level in
-            ChartDataPoint(
-                wave: level,
-                health: cost(level: level)
+            BasicChart.ChartDataPoint(
+                x: level,
+                y: cost(level: level)
+            )
+        }
+    }
+    
+    var chartValueData: [BasicChart.ChartDataPoint] {
+        stride(from: 1, through: maxLevel.rawValue, by: maxLevel.gap).map { level in
+            BasicChart.ChartDataPoint(
+                x: level,
+                y: stat.value(level: level)
             )
         }
     }

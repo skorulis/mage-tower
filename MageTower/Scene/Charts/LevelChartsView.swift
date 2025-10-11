@@ -8,11 +8,6 @@ import SwiftUI
 
 // MARK: - Memory footprint
 
-struct ChartDataPoint {
-    let wave: Int
-    let health: Double
-}
-
 @MainActor struct LevelChartsView {
     @State var viewModel: LevelChartsViewModel
 }
@@ -31,7 +26,7 @@ extension LevelChartsView: View {
     
     private var titleBar: some View {
         TitleBar(
-            title: "Charts",
+            title: "Level Charts",
             backAction: { viewModel.coordinator?.pop() }
         )
     }
@@ -62,29 +57,12 @@ extension LevelChartsView: View {
                 .font(.headline)
                 .padding(.bottom, 8)
             
-            Chart(viewModel.chartData, id: \.wave) { dataPoint in
-                LineMark(
-                    x: .value("Wave", dataPoint.wave),
-                    y: .value("Health", dataPoint.health)
-                )
-                .foregroundStyle(.blue)
-                .lineStyle(StrokeStyle(lineWidth: 2))
-                
-                PointMark(
-                    x: .value("Wave", dataPoint.wave),
-                    y: .value("Health", dataPoint.health)
-                )
-                .foregroundStyle(.blue)
-                .symbolSize(20)
-            }
-            
-            .frame(height: 300)
-            .padding()
+            BasicChart(
+                data: viewModel.chartData,
+                xLabel: "Wave",
+                yLabel: "Health"
+            )
         }
-    }
-    
-    private var maxHealth: Double {
-        viewModel.chartData.map(\.health).max() ?? 50
     }
 }
 
