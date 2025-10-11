@@ -43,6 +43,15 @@ extension DialogView: View {
     }
 }
 
+extension View {
+    
+    func dialog<Content: View>(isVisible: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+        overlay(
+            DialogView(isVisible: isVisible, content: content)
+        )
+    }
+}
+
 // MARK: - Previews
 
 #Preview {

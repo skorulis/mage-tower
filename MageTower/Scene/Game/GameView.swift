@@ -25,6 +25,9 @@ extension GameView: View {
             }
             upgrades
         }
+        .dialog(isVisible: $viewModel.statsVisible) {
+            InGameStatsView(stats: viewModel.statistics)
+        }
         .navigationBarHidden(true)
     }
     
@@ -49,7 +52,16 @@ extension GameView: View {
     
     private var bottomButtons: some View {
         VStack {
-            SpeedAdjuster(speed: $viewModel.speed)
+            HStack {
+                SpeedAdjuster(speed: $viewModel.speed)
+                Spacer()
+                Button(action: viewModel.showStats) {
+                    InfoBox {
+                        Image(systemName: "tray.full.fill")
+                    }
+                }
+            }
+            
             Grid(horizontalSpacing: 8) {
                 GridRow {
                     TowerStatsBox(

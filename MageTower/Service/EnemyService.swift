@@ -59,6 +59,7 @@ final class EnemyService {
         enemies.removeValue(forKey: enemy.id)
         let xp: Double = 1
         gameStore.tower.xp += xp
+        gameStore.statistics.kills += 1
         persistentStore.upgrades.essence += xp * gameStore.tower.value(.essenceConversion)
         contacts.removeValue(forKey: enemy.id)
     }

@@ -6,6 +6,7 @@ import QuartzCore
 
 final class GameStore: ObservableObject {
     @Published var tower: Tower = .init()
+    @Published var statistics: GameStatistics = .init()
     
     @Published var wave: Wave = .empty
     
@@ -22,6 +23,7 @@ final class GameStore: ObservableObject {
     func start(level: Level) {
         self.level = level
         self.levelParameters = levelParameters
+        self.statistics = GameStatistics()
         
         wave = .init(
             number: 1,

@@ -22,6 +22,9 @@ import SwiftUI
     var wave: Wave
     var upgrades: GameUpgrades
     
+    var statistics: GameStatistics
+    var statsVisible: Bool = false
+    
     var sceneSize: CGSize = .zero {
         didSet {
             scene.size = sceneSize
@@ -58,11 +61,17 @@ import SwiftUI
         
         self.tower = gameStore.tower
         self.wave = gameStore.wave
+        self.statistics = gameStore.statistics
         self.upgrades = persistentStore.upgrades
         
         gameStore.$tower.sink { [unowned self] in
             self.tower = $0
             self.scene.updateRange($0.range)
+        }
+        .store(in: &cancellables)
+        
+        gameStore.$statistics.sink { [unowned self] in
+            self.statistics = $0
         }
         .store(in: &cancellables)
         
@@ -88,6 +97,10 @@ import SwiftUI
 // MARK: - Logic
 
 extension GameViewModel {
+    
+    func showStats() {
+        statsVisible = true
+    }
     
     func onUpdate(_ time: TimeInterval) -> Time{
         gameStore.update(currentTime: time, speed: speed)
