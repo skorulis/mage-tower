@@ -1,5 +1,6 @@
 //Created by Alexander Skorulis on 11/10/2025.
 
+import ASKCoordinator
 import Foundation
 import SwiftUI
 
@@ -52,6 +53,30 @@ struct DialogViewBoolWrapper<Content: View>: View {
         }
         .animation(.easeInOut(duration: 0.15), value: isVisible)
     }
+}
+
+struct DialogViewPathWrapper<Content: View>: View {
+    @State var isVisible: Bool = false
+    let content: () -> Content
+    
+    @Environment(\.dismissCustomOverlay) private var onDismiss
+    
+    var body: some View {
+        ZStack {
+            if isVisible {
+                DialogView(
+                    onDismiss: { onDismiss() },
+                    content: content
+                )
+                .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.15), value: isVisible)
+        .onAppear {
+            isVisible = true
+        }
+    }
+    
 }
 
 struct DialogViewItemWrapper<Item: Equatable, Content: View>: View {

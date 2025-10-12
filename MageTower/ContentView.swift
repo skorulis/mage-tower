@@ -12,6 +12,10 @@ struct ContentView: View {
     var body: some View {
         CoordinatorView(coordinator: coordinator)
             .with(renderer: resolver!.gamePathRenderer())
+            .with(renderer: resolver!.gameDialogPathRenderer())
+            .with(overlay: .dialog) { view in
+                AnyView(DialogViewPathWrapper { view })
+            }
     }
 }
 

@@ -17,7 +17,11 @@ import SwiftUI
     let persistentStore: PersistentStore
     let upgradeViewModel: InGameUpgradeViewModel
     
-    var coordinator: ASKCoordinator.Coordinator?
+    var coordinator: ASKCoordinator.Coordinator? {
+        didSet {
+            upgradeViewModel.coordinator = coordinator
+        }
+    }
     var cancellables = Set<AnyCancellable>()
     var tower: Tower
     var wave: Wave
@@ -109,10 +113,6 @@ extension GameViewModel {
     
     func showStats() {
         dialog = .statistics
-    }
-    
-    func showInfo(_ stat: MainStat) {
-        dialog = .statDetails(stat)
     }
     
     func onUpdate(_ time: TimeInterval) -> Time? {

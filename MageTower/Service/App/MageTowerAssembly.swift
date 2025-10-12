@@ -15,6 +15,7 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
         container.register(SpawnService.self) { _ in SpawnService() }
         container.register(WeaponService.self) { WeaponService.make(resolver: $0) }
         container.register(GamePathRenderer.self) { GamePathRenderer(resolver: $0) }
+        container.register(GameDialogPathRenderer.self) { GameDialogPathRenderer(resolver: $0) }
         
         registerViewModels(container: container)
         registerStores(container: container)

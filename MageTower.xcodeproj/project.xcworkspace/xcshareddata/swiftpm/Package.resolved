@@ -1,5 +1,5 @@
 {
-  "originHash" : "4f6f5177969e130d5aacb4978f521d007eda324d07e75da2d9c03201fb07950f",
+  "originHash" : "020ee220dfd2c165d0204f5ec7aeec4c62df10ae29bc2642a58f6a93682cf24c",
   "pins" : [
     {
       "identity" : "askcoordinator",
@@ -7,7 +7,7 @@
       "location" : "git@github.com:skorulis/ASKCoordinator.git",
       "state" : {
         "branch" : "main",
-        "revision" : "5e8d5457970b443f93022bdc67fa5dfa32115d2b"
+        "revision" : "461cb72d0492ae5af1c882b7def54124b4379abb"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "309a47b2b1d9b5e991f36961c983ecec72275be3",
-        "version" : "1.6.1"
+        "revision" : "cdd0ef3755280949551dc26dee5de9ddeda89f54",
+        "version" : "1.6.2"
       }
     },
     {

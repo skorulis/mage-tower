@@ -1,10 +1,13 @@
 //  Created by Alexander Skorulis on 24/9/2025.
 
+import ASKCoordinator
 import Combine
 import Foundation
 import KnitMacros
 
 @Observable final class InGameUpgradeViewModel {
+    
+    var coordinator: ASKCoordinator.Coordinator?
     
     private let gameStore: GameStore
     
@@ -41,6 +44,10 @@ extension InGameUpgradeViewModel {
     func canAfford(stat: MainStat) -> Bool {
         let cost = stat.cost(level: tower.level(stat))
         return tower.xp >= cost
+    }
+    
+    func showInfo(_ stat: MainStat) {
+        coordinator?.custom(overlay: .dialog, GameDialogPath.mainStatDetails(stat))
     }
 }
 

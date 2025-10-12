@@ -53,7 +53,7 @@ extension InGameUpgradeView: View {
             cost: viewModel.tower.cost(item),
             canAfford: viewModel.canAfford(stat: item),
             onUpgrade: { viewModel.upgrade(stat: item) },
-            onInfo: { viewModel. }
+            onInfo: { viewModel.showInfo(item) }
         )
     }
     
