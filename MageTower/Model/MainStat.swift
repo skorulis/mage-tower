@@ -56,6 +56,17 @@ enum MainStat: String, CaseIterable, Codable {
         }
     }
     
+    var description: String {
+        switch self {
+        case .health:
+            return "Increase base health"
+        case .damage:
+            return "Increase base damage"
+        case .essenceConversion:
+            return "Conversion of XP to essence"
+        }
+    }
+    
     var baseCost: Double {
         switch self {
         case .health:

@@ -99,6 +99,7 @@ extension GameViewModel {
     enum Dialog: Equatable {
         case statistics
         case finish
+        case statDetails(MainStat)
     }
 }
 
@@ -108,6 +109,10 @@ extension GameViewModel {
     
     func showStats() {
         dialog = .statistics
+    }
+    
+    func showInfo(_ stat: MainStat) {
+        dialog = .statDetails(stat)
     }
     
     func onUpdate(_ time: TimeInterval) -> Time? {

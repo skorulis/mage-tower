@@ -38,26 +38,23 @@ extension InGameUpgradeView: View {
     
     private func row(items: [MainStat]) -> some View {
         GridRow {
-            Button(action: { viewModel.upgrade(stat: items[0]) }) {
-                UpgradeBox(
-                    name: items[0].rawValue,
-                    value: viewModel.tower.value(items[0]),
-                    cost: viewModel.tower.cost(items[0]),
-                )
-            }
-            .disabled(!viewModel.canAfford(stat: items[0]))
+            upgradeBox(item: items[0])
             
             if items.count > 1 {
-                Button(action: { viewModel.upgrade(stat: items[1]) }) {
-                    UpgradeBox(
-                        name: items[1].rawValue,
-                        value: viewModel.tower.value(items[1]),
-                        cost: viewModel.tower.cost(items[1]),
-                    )
-                }
-                .disabled(!viewModel.canAfford(stat: items[1]))
+                upgradeBox(item: items[1])
             }
         }
+    }
+    
+    private func upgradeBox(item: MainStat) -> some View {
+        UpgradeBox(
+            name: item.rawValue,
+            value: viewModel.tower.value(item),
+            cost: viewModel.tower.cost(item),
+            canAfford: viewModel.canAfford(stat: item),
+            onUpgrade: { viewModel.upgrade(stat: item) },
+            onInfo: { viewModel. }
+        )
     }
     
     private var statChunks: [[MainStat]] {
