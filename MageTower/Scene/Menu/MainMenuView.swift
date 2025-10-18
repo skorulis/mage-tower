@@ -54,6 +54,6 @@ extension MainMenuView: View {
 
 #Preview {
     let assembler = MageTowerAssembly.testing()
-    MainMenuView(viewModel: assembler.resolver.mainMenuViewModel())
+    MainMenuView(viewModel: assembler.resolver.mainMenuViewModel(coordinator: nil))
 }
 

@@ -6,10 +6,12 @@ import SwiftUI
 
 public enum GamePath: CoordinatorPath {
  
+    case menuTabs
     case mainMenu
     case game
     case levelCharts
     case statCharts
+    case workshop
     
     public var id: String {
         String(describing: self)
@@ -24,14 +26,18 @@ public struct GamePathRenderer: CoordinatorPathRenderer {
     @ViewBuilder
     public func render(path: GamePath, in coordinator: Coordinator) -> some View {
         switch path {
+        case .menuTabs:
+            MenuTabView(viewModel: coordinator.apply(resolver.menuTabViewModel()))
         case .mainMenu:
-            MainMenuView(viewModel: coordinator.apply(resolver.mainMenuViewModel()))
+            MainMenuView(viewModel: resolver.mainMenuViewModel(coordinator: coordinator))
         case .game:
             GameView(viewModel: coordinator.apply(resolver.gameViewModel()))
         case .levelCharts:
             LevelChartsView(viewModel: coordinator.apply(resolver.levelChartsViewModel()))
         case .statCharts:
             StatChartView(viewModel: coordinator.apply(resolver.statChartViewModel()))
+        case .workshop:
+            WorkShopView(viewModel: coordinator.apply(resolver.workShopViewModel()))
         }
     }
 }

@@ -1,6 +1,7 @@
 //  Created by Alexander Skorulis on 10/9/2025.
 
 import ASKCore
+import ASKCoordinator
 import Foundation
 import Knit
 import SwiftUI
@@ -37,9 +38,13 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
     private func registerViewModels(container: Container<TargetResolver>) {
         container.register(GameViewModel.self) { GameViewModel.make(resolver: $0) }
         container.register(InGameUpgradeViewModel.self) { InGameUpgradeViewModel.make(resolver: $0) }
-        container.register(MainMenuViewModel.self) { MainMenuViewModel.make(resolver: $0) }
+        container.register(MainMenuViewModel.self) { (resolver: TargetResolver, coordinator: ASKCoordinator.Coordinator?) in
+            MainMenuViewModel.make(resolver: resolver, coordinator: coordinator)
+        }
         container.register(LevelChartsViewModel.self) { LevelChartsViewModel.make(resolver: $0) }
         container.register(StatChartViewModel.self) { StatChartViewModel.make(resolver: $0) }
+        container.register(WorkShopViewModel.self) { WorkShopViewModel.make(resolver: $0) }
+        container.register(MenuTabViewModel.self) { MenuTabViewModel.make(resolver: $0) }
     }
     
     static var dependencies: [any Knit.ModuleAssembly.Type] { [] }

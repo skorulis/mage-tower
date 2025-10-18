@@ -15,7 +15,8 @@ import SwiftUI
     var level: Level = .one
     
     @Resolvable<MageTowerResolver>
-    init(gameStore: GameStore) {
+    init(@Argument coordinator: ASKCoordinator.Coordinator?, gameStore: GameStore) {
+        self.coordinator = coordinator
         self.gameStore = gameStore
     }
 }
