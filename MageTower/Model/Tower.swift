@@ -2,9 +2,8 @@
 
 import Foundation
 
-struct Tower {
+struct Tower: Codable {
     var statLevel: [MainStat: Int] = [:]
-    var xp: Double = 0
     var currentHealth: Double = 0
     
     var range: CGFloat { 200 }

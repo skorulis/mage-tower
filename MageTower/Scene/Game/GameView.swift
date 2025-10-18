@@ -83,7 +83,7 @@ extension GameView: View {
                         currentHealth: viewModel.tower.currentHealth,
                         maxHealth: viewModel.tower.value(.health),
                         damage: viewModel.tower.value(.damage),
-                        xp: viewModel.tower.xp,
+                        xp: viewModel.wallet.aether,
                     )
                     WaveProgressBox(
                         wave: viewModel.wave,

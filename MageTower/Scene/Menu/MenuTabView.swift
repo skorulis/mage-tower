@@ -23,7 +23,7 @@ extension MenuTabView: View {
                         Text("Main")
                     }
                 
-                WorkShopView(viewModel: resolver.workShopViewModel())
+                WorkShopView(viewModel: resolver.workShopViewModel(coordinator: viewModel.coordinator))
                     .tabItem {
                         Text("Workshop")
                     }

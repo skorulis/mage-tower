@@ -24,6 +24,7 @@ import SwiftUI
     }
     var cancellables = Set<AnyCancellable>()
     var tower: Tower
+    var wallet: Wallet
     var wave: Wave
     var upgrades: GameUpgrades
     
@@ -65,6 +66,7 @@ import SwiftUI
         )
         
         self.tower = gameStore.tower
+        self.wallet = gameStore.wallet
         self.wave = gameStore.wave
         self.statistics = gameStore.statistics
         self.upgrades = persistentStore.upgrades
@@ -72,6 +74,11 @@ import SwiftUI
         gameStore.$tower.sink { [unowned self] in
             self.tower = $0
             self.scene.updateRange($0.range)
+        }
+        .store(in: &cancellables)
+        
+        gameStore.$wallet.sink { [unowned self] in
+            self.wallet = $0
         }
         .store(in: &cancellables)
         

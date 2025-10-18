@@ -9,11 +9,12 @@ import KnitMacros
     
     var coordinator: ASKCoordinator.Coordinator?
     
-    private let gameStore: GameStore
+    let gameStore: GameStore
     
     var isOpen: Bool = true
     
     var tower: Tower
+    var wallet: Wallet
     
     var cancellables: Set<AnyCancellable> = []
     
@@ -21,9 +22,15 @@ import KnitMacros
     init(gameStore: GameStore) {
         self.gameStore = gameStore
         self.tower = gameStore.tower
+        self.wallet = gameStore.wallet
         
         gameStore.$tower.sink { [unowned self] tower in
             self.tower = tower
+        }
+        .store(in: &cancellables)
+        
+        gameStore.$wallet.sink { [unowned self] wallet in
+            self.wallet = wallet
         }
         .store(in: &cancellables)
     }
@@ -32,19 +39,6 @@ import KnitMacros
 // MARK: - Logic
 
 extension InGameUpgradeViewModel {
-    
-    func upgrade(stat: MainStat) {
-        guard canAfford(stat: stat) else { return }
-        let cost = stat.cost(level: tower.level(stat))
-        let old = gameStore.tower.statLevel[stat] ?? 1
-        gameStore.tower.statLevel[stat] = old + 1
-        gameStore.tower.xp -= cost
-    }
-    
-    func canAfford(stat: MainStat) -> Bool {
-        let cost = stat.cost(level: tower.level(stat))
-        return tower.xp >= cost
-    }
     
     func showInfo(_ stat: MainStat) {
         coordinator?.custom(overlay: .dialog, GameDialogPath.mainStatDetails(stat))

@@ -30,8 +30,27 @@ extension WorkShopView: View {
     
     private var content: some View {
         VStack {
-            
+            TowerUpgradeView(
+                currency: .anima,
+                tower: towerBinding,
+                wallet: walletBinding,
+                onInfoPress: { viewModel.showInfo($0) }
+            )
         }
+    }
+    
+    var towerBinding: Binding<Tower> {
+        Binding<Tower>(
+            get: { viewModel.tower },
+            set: { viewModel.persistentStore.tower = $0 }
+        )
+    }
+    
+    var walletBinding: Binding<Wallet> {
+        Binding<Wallet>(
+            get: { viewModel.wallet },
+            set: { viewModel.persistentStore.wallet = $0 }
+        )
     }
 }
 
@@ -39,6 +58,6 @@ extension WorkShopView: View {
 
 #Preview {
     let assembler = MageTowerAssembly.testing()
-    WorkShopView(viewModel: assembler.resolver.workShopViewModel())
+    WorkShopView(viewModel: assembler.resolver.workShopViewModel(coordinator: nil))
 }
 

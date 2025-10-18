@@ -14,15 +14,27 @@ final class PersistentStore: ObservableObject {
         }
     }
     
-    @Published var wallet: Wallet
+    @Published var wallet: Wallet {
+        didSet {
+            try? keyValueStore.set(codable: wallet, forKey: Self.walletKey)
+        }
+    }
+    
+    /// Initial tower setup before starting the round
+    @Published var tower: Tower {
+        didSet {
+            try? keyValueStore.set(codable: tower, forKey: Self.towerKey)
+        }
+    }
     
     private let keyValueStore: PKeyValueStore
-        
+
     @Resolvable<MageTowerResolver>
     init(keyValueStore: PKeyValueStore) {
         self.keyValueStore = keyValueStore
         self.upgrades = (try? keyValueStore.codable(forKey: Self.upgradesKey)) ?? .init()
         self.wallet = (try? keyValueStore.codable(forKey: Self.walletKey)) ?? .init()
+        self.tower = (try? keyValueStore.codable(forKey: Self.towerKey)) ?? .init()
     }
 }
 
@@ -31,4 +43,5 @@ final class PersistentStore: ObservableObject {
 extension PersistentStore {
     private static let upgradesKey: String = "upgradesKey"
     private static let walletKey: String = "walletKey"
+    private static let towerKey: String = "towerKey"
 }

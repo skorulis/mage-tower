@@ -58,7 +58,7 @@ final class EnemyService {
         enemy.node?.removeFromParent()
         enemies.removeValue(forKey: enemy.id)
         let xp: Double = 1
-        gameStore.tower.xp += xp
+        gameStore.wallet.add(currency: .aether, amount: xp)
         gameStore.statistics.kills += 1
         persistentStore.wallet.add(
             currency: .anima,

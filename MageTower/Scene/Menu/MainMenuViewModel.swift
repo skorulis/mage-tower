@@ -12,12 +12,19 @@ import SwiftUI
     
     private let gameStore: GameStore
     
+    private let persistentStore: PersistentStore
+    
     var level: Level = .one
     
     @Resolvable<MageTowerResolver>
-    init(@Argument coordinator: ASKCoordinator.Coordinator?, gameStore: GameStore) {
+    init(
+        @Argument coordinator: ASKCoordinator.Coordinator?,
+        gameStore: GameStore,
+        persistentStore: PersistentStore
+    ) {
         self.coordinator = coordinator
         self.gameStore = gameStore
+        self.persistentStore = persistentStore
     }
 }
 
@@ -26,7 +33,7 @@ import SwiftUI
 extension MainMenuViewModel {
     
     func start() {
-        gameStore.start(level: level)
+        gameStore.start(level: level, tower: persistentStore.tower)
         coordinator?.push(GamePath.game)
     }
     

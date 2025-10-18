@@ -43,7 +43,9 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
         }
         container.register(LevelChartsViewModel.self) { LevelChartsViewModel.make(resolver: $0) }
         container.register(StatChartViewModel.self) { StatChartViewModel.make(resolver: $0) }
-        container.register(WorkShopViewModel.self) { WorkShopViewModel.make(resolver: $0) }
+        container.register(WorkShopViewModel.self) { (resolver: TargetResolver, coordinator: ASKCoordinator.Coordinator?) in
+            WorkShopViewModel.make(resolver: resolver, coordinator: coordinator)
+        }
         container.register(MenuTabViewModel.self) { MenuTabViewModel.make(resolver: $0) }
     }
     

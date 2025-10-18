@@ -13,8 +13,8 @@ enum Currency: Hashable, Codable {
 struct Wallet: Codable {
     private var amounts: [Currency: Double]
     
-    init() {
-        amounts = [:]
+    init(amounts: [Currency: Double] = [:]) {
+        self.amounts = amounts
     }
     
     mutating func add(currency: Currency, amount: Double) {
@@ -25,7 +25,6 @@ struct Wallet: Codable {
         amounts[currency] ?? 0
     }
     
-    var anima: Double {
-        amount(.anima)
-    }
+    var anima: Double { amount(.anima) }
+    var aether: Double { amount(.aether) }
 }

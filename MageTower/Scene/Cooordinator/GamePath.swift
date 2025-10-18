@@ -37,7 +37,7 @@ public struct GamePathRenderer: CoordinatorPathRenderer {
         case .statCharts:
             StatChartView(viewModel: coordinator.apply(resolver.statChartViewModel()))
         case .workshop:
-            WorkShopView(viewModel: coordinator.apply(resolver.workShopViewModel()))
+            WorkShopView(viewModel: resolver.workShopViewModel(coordinator: coordinator))
         }
     }
 }

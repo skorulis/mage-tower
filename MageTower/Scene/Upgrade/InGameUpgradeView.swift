@@ -17,48 +17,18 @@ extension InGameUpgradeView: View {
     var body: some View {
         VStack {
             if viewModel.isOpen {
-                Grid {
-                    ForEach(statChunks.indices, id: \.self) { index in
-                        row(items: statChunks[index])
-                    }
-                }
-                .transition(
-                    AnyTransition
-                        .move(edge: .bottom)
-                        .combined(with: .opacity)
+                TowerUpgradeView(
+                    currency: .aether,
+                    tower: towerBinding,
+                    wallet: walletBinding,
+                    onInfoPress: { viewModel.showInfo($0) }
                 )
-                
             }
             tabs
             Color.clear
                 .frame(height: 1)
         }
         .animation(.default, value: viewModel.isOpen)
-    }
-    
-    private func row(items: [MainStat]) -> some View {
-        GridRow {
-            upgradeBox(item: items[0])
-            
-            if items.count > 1 {
-                upgradeBox(item: items[1])
-            }
-        }
-    }
-    
-    private func upgradeBox(item: MainStat) -> some View {
-        UpgradeBox(
-            name: item.rawValue,
-            value: viewModel.tower.value(item),
-            cost: viewModel.tower.cost(item),
-            canAfford: viewModel.canAfford(stat: item),
-            onUpgrade: { viewModel.upgrade(stat: item) },
-            onInfo: { viewModel.showInfo(item) }
-        )
-    }
-    
-    private var statChunks: [[MainStat]] {
-        MainStat.allCases.chunked(into: 2)
     }
     
     private var tabs: some View {
@@ -69,6 +39,20 @@ extension InGameUpgradeView: View {
                 }
             }
         }
+    }
+    
+    var towerBinding: Binding<Tower> {
+        Binding<Tower>(
+            get: { viewModel.tower },
+            set: { viewModel.gameStore.tower = $0 }
+        )
+    }
+    
+    var walletBinding: Binding<Wallet> {
+        Binding<Wallet>(
+            get: { viewModel.wallet },
+            set: { viewModel.gameStore.wallet = $0 }
+        )
     }
 }
 

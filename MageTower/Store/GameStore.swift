@@ -6,6 +6,7 @@ import QuartzCore
 
 final class GameStore: ObservableObject {
     @Published var tower: Tower = .init()
+    @Published var wallet: Wallet = .init()
     @Published var statistics: GameStatistics = .init()
     
     @Published var wave: Wave = .empty
@@ -20,7 +21,7 @@ final class GameStore: ObservableObject {
         self.levelParameters = Level.one.params
     }
     
-    func start(level: Level) {
+    func start(level: Level, tower: Tower) {
         self.level = level
         self.levelParameters = levelParameters
         self.statistics = GameStatistics()
@@ -33,7 +34,8 @@ final class GameStore: ObservableObject {
         // Initialize time tracking
         time = .init()
         
-        tower.currentHealth = tower.value(.health)
+        self.tower = tower
+        self.tower.currentHealth = tower.value(.health)
     }
     
     func update(currentTime: TimeInterval, speed: Double) {
