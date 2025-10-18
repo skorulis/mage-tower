@@ -4,8 +4,5 @@ import Foundation
 
 struct GameUpgrades: Codable {
     
-    // Essence left to spend
-    var essence: Double = 0
-    
     var upgrades: [MainStat: Int] = [:]
 }

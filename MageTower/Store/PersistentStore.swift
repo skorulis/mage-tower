@@ -14,13 +14,21 @@ final class PersistentStore: ObservableObject {
         }
     }
     
+    @Published var wallet: Wallet
+    
     private let keyValueStore: PKeyValueStore
-    
-    private static let upgradesKey: String = "upgradesKey"
-    
+        
     @Resolvable<MageTowerResolver>
     init(keyValueStore: PKeyValueStore) {
         self.keyValueStore = keyValueStore
         self.upgrades = (try? keyValueStore.codable(forKey: Self.upgradesKey)) ?? .init()
+        self.wallet = (try? keyValueStore.codable(forKey: Self.walletKey)) ?? .init()
     }
+}
+
+// MARK: - Keys
+
+extension PersistentStore {
+    private static let upgradesKey: String = "upgradesKey"
+    private static let walletKey: String = "walletKey"
 }

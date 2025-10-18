@@ -53,12 +53,16 @@ extension GameView: View {
     private var topBar: some View {
         HStack {
             VStack {
-                Text("👻: \(CompactNumberFormatter().string(viewModel.upgrades.essence))")
+                Text("👻: \(animaString)")
                     .foregroundStyle(Color.white)
             }
             Spacer()
         }
         .padding(.horizontal, 16)
+    }
+    
+    private var animaString: String {
+        CompactNumberFormatter().string(viewModel.persistentStore.wallet.amount(.anima))
     }
     
     private var bottomButtons: some View {
