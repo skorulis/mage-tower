@@ -41,7 +41,7 @@ import KnitMacros
 extension InGameUpgradeViewModel {
     
     func showInfo(_ stat: MainStat) {
-        coordinator?.custom(overlay: .dialog, GameDialogPath.mainStatDetails(stat))
+        coordinator?.custom(overlay: .dialog, GameDialogPath.mainStatDetails(stat: stat, inGame: false))
     }
 }
 

@@ -56,7 +56,7 @@ extension TowerUpgradeView: View {
     
     private func canAfford(stat: MainStat) -> Bool {
         let cost = stat.cost(level: tower.level(stat))
-        return wallet.amount(.aether) >= cost
+        return wallet.amount(currency) >= cost
     }
     
     private func upgrade(stat: MainStat) {
@@ -64,7 +64,7 @@ extension TowerUpgradeView: View {
         let cost = stat.cost(level: tower.level(stat))
         let old = tower.statLevel[stat] ?? 1
         tower.statLevel[stat] = old + 1
-        wallet.add(currency: .aether, amount: -cost)
+        wallet.add(currency: currency, amount: -cost)
     }
 }
 

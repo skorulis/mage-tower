@@ -6,7 +6,7 @@ import SwiftUI
 enum GameDialogPath: CoordinatorPath {
  
     case inGameStatistics
-    case mainStatDetails(MainStat)
+    case mainStatDetails(stat: MainStat, inGame: Bool)
     
     public var id: String {
         String(describing: self)
@@ -26,8 +26,10 @@ struct GameDialogPathRenderer: CoordinatorPathRenderer {
         switch path {
         case .inGameStatistics:
             InGameStatsView(stats: resolver.gameStore().statistics)
-        case let .mainStatDetails(stat):
-            MainStatDetailsDialog(stat: stat)
+        case let .mainStatDetails(stat, inGame):
+            MainStatDetailsDialog(
+                viewModel: resolver.mainStatDetailsDialogViewModel(stat: stat, inGame: inGame)
+            )
         }
     }
 }

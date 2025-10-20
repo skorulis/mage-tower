@@ -46,6 +46,13 @@ final class MageTowerAssembly: AutoInitModuleAssembly {
         container.register(WorkShopViewModel.self) { (resolver: TargetResolver, coordinator: ASKCoordinator.Coordinator?) in
             WorkShopViewModel.make(resolver: resolver, coordinator: coordinator)
         }
+        container.register(MainStatDetailsDialogViewModel.self) { (resolver: TargetResolver, stat: MainStat, inGame: Bool) in
+            MainStatDetailsDialogViewModel(
+                stat: stat,
+                towerProvider: inGame ? resolver.gameStore() : resolver.persistentStore(),
+            )
+        }
+        
         container.register(MenuTabViewModel.self) { MenuTabViewModel.make(resolver: $0) }
     }
     

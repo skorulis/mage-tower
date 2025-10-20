@@ -1,12 +1,13 @@
 //Created by Alexander Skorulis on 12/10/2025.
 
 import Foundation
+import Knit
 import SwiftUI
 
 // MARK: - Memory footprint
 
 @MainActor struct MainStatDetailsDialog {
-    let stat: MainStat
+    @State var viewModel: MainStatDetailsDialogViewModel
 }
 
 // MARK: - Rendering
@@ -15,11 +16,13 @@ extension MainStatDetailsDialog: View {
     
     var body: some View {
         VStack {
-            Text(stat.name)
+            Text(viewModel.stat.name)
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text(stat.description)
+            Text("level: \(viewModel.tower.level(viewModel.stat))")
+            
+            Text(viewModel.stat.description)
         }
     }
 }
@@ -27,8 +30,14 @@ extension MainStatDetailsDialog: View {
 // MARK: - Previews
 
 #Preview {
+    let assembler = MageTowerAssembly.testing()
     DialogBox {
-        MainStatDetailsDialog(stat: .health)
+        MainStatDetailsDialog(
+            viewModel: assembler.resolver.mainStatDetailsDialogViewModel(
+                stat: .health,
+                inGame: false,
+            )
+        )
     }
 }
 

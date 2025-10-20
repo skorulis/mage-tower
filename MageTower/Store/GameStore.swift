@@ -4,7 +4,7 @@ import Combine
 import Foundation
 import QuartzCore
 
-final class GameStore: ObservableObject {
+final class GameStore: ObservableObject, TowerProvider {
     @Published var tower: Tower = .init()
     @Published var wallet: Wallet = .init()
     @Published var statistics: GameStatistics = .init()
@@ -15,6 +15,8 @@ final class GameStore: ObservableObject {
     @Published var levelParameters: LevelParameters
     
     @Published var time: Time = .init()
+    
+    var towerPublisher: Published<Tower>.Publisher { $tower }
     
     init() {
         self.level = .one

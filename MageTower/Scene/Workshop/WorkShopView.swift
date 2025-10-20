@@ -29,7 +29,9 @@ extension WorkShopView: View {
     }
     
     private var content: some View {
-        VStack {
+        VStack(alignment: .leading) {
+            Text("Anima: \(CompactNumberFormatter.string(viewModel.wallet.anima))")
+            
             TowerUpgradeView(
                 currency: .anima,
                 tower: towerBinding,

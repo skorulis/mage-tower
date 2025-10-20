@@ -35,8 +35,6 @@ extension GameView: View {
                     wave: viewModel.wave,
                     onFinish: { viewModel.coordinator?.pop() }
                 )
-            case .statDetails(let stat):
-                MainStatDetailsDialog(stat: stat)
             }
         }
         .navigationBarHidden(true)

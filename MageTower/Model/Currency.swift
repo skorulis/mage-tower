@@ -2,7 +2,7 @@
 
 import Foundation
 
-enum Currency: Hashable, Codable {
+nonisolated enum Currency: Hashable, Codable {
     // In game currency
     case aether
     

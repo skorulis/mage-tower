@@ -7,7 +7,7 @@ import Knit
 import KnitMacros
 
 /// Data that survives between games
-final class PersistentStore: ObservableObject {
+final class PersistentStore: ObservableObject, TowerProvider {
     @Published var upgrades: GameUpgrades {
         didSet {
             try? keyValueStore.set(codable: upgrades, forKey: Self.upgradesKey)
@@ -26,6 +26,8 @@ final class PersistentStore: ObservableObject {
             try? keyValueStore.set(codable: tower, forKey: Self.towerKey)
         }
     }
+    
+    var towerPublisher: Published<Tower>.Publisher { $tower }
     
     private let keyValueStore: PKeyValueStore
 

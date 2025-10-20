@@ -1,5 +1,6 @@
 //Created by Alexander Skorulis on 27/9/2025.
 
+import Combine
 import Foundation
 
 struct Tower: Codable {
@@ -19,4 +20,9 @@ struct Tower: Codable {
     func cost(_ stat: MainStat) -> Double {
         return stat.cost(level: level(stat))
     }
+}
+
+protocol TowerProvider {
+    var tower: Tower { get set }
+    var towerPublisher: Published<Tower>.Publisher { get }
 }

@@ -4,6 +4,8 @@ import Foundation
 
 nonisolated struct CompactNumberFormatter {
     
+    static let shared = CompactNumberFormatter()
+    
     nonisolated init() {}
     
     nonisolated func string(_ double: Double) -> String {
@@ -11,6 +13,10 @@ nonisolated struct CompactNumberFormatter {
         let scale = Scale.allCases.first(where: { $0.limit > absValue}) ?? Scale.exa
         let toFormat = double / scale.divisor
         return "\(String(format: "%.1f", toFormat))\(scale.abbreviation)"
+    }
+    
+    static func string(_ double: Double) -> String {
+        shared.string(double)
     }
     
 }

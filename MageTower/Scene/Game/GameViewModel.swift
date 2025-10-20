@@ -110,7 +110,6 @@ extension GameViewModel {
     enum Dialog: Equatable {
         case statistics
         case finish
-        case statDetails(MainStat)
     }
 }
 
