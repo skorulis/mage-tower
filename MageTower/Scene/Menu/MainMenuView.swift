@@ -32,6 +32,12 @@ extension MainMenuView: View {
                 Text("Start")
             }
             
+            if let bestWave = viewModel.bestWaveForCurrentLevel {
+                Text("Best Wave: \(bestWave)")
+                    .font(.caption)
+                    .foregroundStyle(Color.secondary)
+            }
+            
             StepperPicker(
                 value: $viewModel.level,
                 options: Level.allCases) {

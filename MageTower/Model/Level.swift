@@ -2,7 +2,7 @@
 
 import Foundation
 
-enum Level: CaseIterable, CustomStringConvertible {
+enum Level: CaseIterable, CustomStringConvertible, Codable {
     case one
     case two
     case three

@@ -135,6 +135,13 @@ extension GameViewModel {
     
     private func checkDeath() {
         if tower.currentHealth <= 0 {
+            // Update level records with current game performance
+            persistentStore.updateLevelRecord(
+                level: gameStore.level,
+                wave: wave.number,
+                income: wallet.totalEarned,
+            )
+            
             self.dialog = .finish
             self.scene.isPaused = true
         }

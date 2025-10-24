@@ -11,13 +11,19 @@ nonisolated enum Currency: Hashable, Codable {
 }
 
 struct Wallet: Codable {
-    private var amounts: [Currency: Double]
+    // The total earnings for this wallet
+    private(set) var totalEarned: [Currency: Double]
+    
+    // The current balance
+    private(set) var amounts: [Currency: Double]
     
     init(amounts: [Currency: Double] = [:]) {
+        self.totalEarned = amounts
         self.amounts = amounts
     }
     
     mutating func add(currency: Currency, amount: Double) {
+        totalEarned[currency] = (totalEarned[currency] ?? 0) + amount
         amounts[currency] = self.amount(currency) + amount
     }
     

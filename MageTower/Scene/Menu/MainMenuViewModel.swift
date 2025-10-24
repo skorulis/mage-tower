@@ -16,6 +16,10 @@ import SwiftUI
     
     var level: Level = .one
     
+    var bestWaveForCurrentLevel: Int? {
+        persistentStore.levelRecords.levels[level]?.bestWave
+    }
+    
     @Resolvable<MageTowerResolver>
     init(
         @Argument coordinator: ASKCoordinator.Coordinator?,
