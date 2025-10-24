@@ -32,7 +32,7 @@ extension MainMenuView: View {
                 Text("Start")
             }
             
-            if let bestWave = viewModel.bestWaveForCurrentLevel {
+            if let bestWave = viewModel.levelRecords.levels[viewModel.level]?.bestWave {
                 Text("Best Wave: \(bestWave)")
                     .font(.caption)
                     .foregroundStyle(Color.secondary)

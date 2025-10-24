@@ -31,12 +31,6 @@ import SwiftUI
     var statistics: GameStatistics
     var dialog: Dialog?
     
-    var sceneSize: CGSize = .zero {
-        didSet {
-            scene.size = sceneSize
-        }
-    }
-    
     var speed: Double {
         didSet {
             scene.physicsWorld.speed = CGFloat(speed)
@@ -60,7 +54,7 @@ import SwiftUI
         self.upgradeViewModel = upgradeViewModel
         self.speed = 1
         scene = GameScene(
-            size: UIScreen.main.bounds.size,
+            size: .zero,
             enemyService: enemyService,
             speed: 1,
         )
@@ -119,6 +113,13 @@ extension GameViewModel {
     
     func showStats() {
         dialog = .statistics
+    }
+    
+    func handleHamburgerAction(_ action: HamburgerMenu.Action) {
+        switch action {
+        case .endRound:
+            self.tower.currentHealth = 0
+        }
     }
     
     func onUpdate(_ time: TimeInterval) -> Time? {

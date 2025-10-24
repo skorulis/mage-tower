@@ -18,10 +18,9 @@ extension GameView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            ZStack(alignment: .center) {
+            ZStack(alignment: .top) {
                 SpriteView(scene: viewModel.scene)
                     .ignoresSafeArea()
-                    .readSize(size: $viewModel.sceneSize)
                 buttonOverlay
             }
             upgrades
@@ -49,14 +48,18 @@ extension GameView: View {
     }
     
     private var topBar: some View {
-        HStack {
+        HStack(alignment: .top) {
             VStack {
                 Text("👻: \(animaString)")
                     .foregroundStyle(Color.white)
             }
             Spacer()
+            HamburgerMenu { action in
+                viewModel.handleHamburgerAction(action)
+            }
         }
         .padding(.horizontal, 16)
+        .padding(.top, 2)
     }
     
     private var animaString: String {

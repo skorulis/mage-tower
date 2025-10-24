@@ -1,6 +1,7 @@
 //Created by Alexander Skorulis on 28/9/2025.
 
 import ASKCoordinator
+import Combine
 import Foundation
 import Knit
 import KnitMacros
@@ -16,9 +17,9 @@ import SwiftUI
     
     var level: Level = .one
     
-    var bestWaveForCurrentLevel: Int? {
-        persistentStore.levelRecords.levels[level]?.bestWave
-    }
+    var levelRecords: LevelRecords
+    
+    private var cancellables: Set<AnyCancellable> = []
     
     @Resolvable<MageTowerResolver>
     init(
@@ -29,6 +30,12 @@ import SwiftUI
         self.coordinator = coordinator
         self.gameStore = gameStore
         self.persistentStore = persistentStore
+        self.levelRecords = persistentStore.levelRecords
+        
+        persistentStore.$levelRecords.sink { [unowned self] in
+            self.levelRecords = $0
+        }
+        .store(in: &cancellables)
     }
 }
 
